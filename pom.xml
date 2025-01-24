@@ -6,12 +6,13 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.2.3</version>
+		<relativePath/>
 	</parent>
 	<groupId>usmb.info803</groupId>
 	<artifactId>profile-search</artifactId>
-	<version>1.0-SNAPSHOT</version>
-	<name>profile_search</name>
-	<description>Demo project for Spring Boot</description>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>profile-search</name>
+	<description>Service de recherche de profils</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -31,10 +32,6 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
@@ -51,7 +48,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<mainClass>usmb.info803.profile_search.ProfileSearchController</mainClass>
+					<mainClass>usmb.info803.profile_search.ProfileSearchApplication</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>

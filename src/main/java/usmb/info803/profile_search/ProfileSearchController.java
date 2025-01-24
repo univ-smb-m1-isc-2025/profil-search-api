@@ -10,8 +10,4 @@ public class ProfileSearchController {
     public String search() {
         return "Hello from Profile Search!";
     }
-
-    public static void main(String[] args) {
-        System.out.println("Hello from Profile Search!");
-    }
 }
