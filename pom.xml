@@ -5,12 +5,11 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.2</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<version>3.2.3</version>
 	</parent>
 	<groupId>usmb.info803</groupId>
-	<artifactId>profile_search</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>profile-search</artifactId>
+	<version>1.0-SNAPSHOT</version>
 	<name>profile_search</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
