@@ -5,3 +5,19 @@ services:
       - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresdb:5432/mydatabase
+      - SPRING_DATASOURCE_USERNAME=profil-search
+      - SPRING_DATASOURCE_PASSWORD=profil-search
+    depends_on:
+      - postgresdb
+
+  postgresdb:
+    image: postgres:15.2
+    container_name: postgresdb
+    restart: always
+    environment:
+      POSTGRES_USER: profil-search
+      POSTGRES_PASSWORD: profil-search
+      POSTGRES_DB: profilSearch
+    ports:
+      - "5432:5432"
