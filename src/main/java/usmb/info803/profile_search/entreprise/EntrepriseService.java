@@ -27,8 +27,12 @@ public class EntrepriseService {
         entreprise.ifPresent(entrepriseRepository::delete);
     }
 
-    public void create(String name) {
-        // FIXME: check if name is not already in the database
+    public boolean create(String name) {
+        Entreprise entreprise = entrepriseRepository.findByName(name);
+        if(entreprise != null) {
+            return false;
+        }
         entrepriseRepository.save(new Entreprise(name));
+        return true;
     }
 }

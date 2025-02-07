@@ -3,6 +3,7 @@ package usmb.info803.profile_search.entreprise;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,20 +32,40 @@ public class EntrepriseController {
     }
 
     @GetMapping(value = "/{id}")
-    public Entreprise entreprise(long id){
-        logger.info("Get entreprise by id : " + id);
-        return entrepriseService.entreprise(id);
+    public Entreprise entreprise(@PathVariable("id") String id_s){
+        logger.info("Get entreprise by id : " + id_s);
+        long id = -1;
+        try {
+            id = Long.parseLong(id_s);
+        } catch (NumberFormatException e) {
+            logger.error("Invalid id : " + id_s);
+        }
+        if(id != -1){
+            return entrepriseService.entreprise(id);
+        }
+        return null;
     }
 
     @GetMapping(value = "/delete/{id}")
-    public void delete(long id){
-        logger.info("Delete entreprise by id : " + id);
-        entrepriseService.delete(id);
+    public void delete(@PathVariable("id") String id_s){
+        logger.info("Delete entreprise by id : " + id_s);
+        long id = -1;
+        try {
+            id = Long.parseLong(id_s);
+            entrepriseService.delete(id);
+        } catch (NumberFormatException e) {
+            logger.error("Invalid id : " + id_s);
+        }
+        if(id != -1){
+            entrepriseService.delete(id);
+        }
     }
 
     @GetMapping(value = "/create/{name}")
-    public void create(String name){
+    public void create(@PathVariable("name") String name){
         logger.info("Create entreprise with name : " + name);
-        entrepriseService.create(name);
+        if(!entrepriseService.create(name)) {
+            logger.error("Entreprise already exists : " + name);
+        }
     }
 }
