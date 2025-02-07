@@ -8,6 +8,7 @@ public class ProfileSearchController {
 
     @GetMapping("/search")
     public String search() {
+        // Test
         return "Hello from Profile Search!";
     }
 }
