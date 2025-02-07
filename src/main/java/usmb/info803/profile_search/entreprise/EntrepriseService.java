@@ -1,9 +1,6 @@
-package usmb.info803.profile_search.application;
+package usmb.info803.profile_search.entreprise;
 
 import org.springframework.stereotype.Service;
-
-import usmb.info803.profile_search.infrastructure.persistance.Entreprise;
-import usmb.info803.profile_search.infrastructure.persistance.EntrepriseRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +16,10 @@ public class EntrepriseService {
 
     public List<Entreprise> entreprises() {
         return entrepriseRepository.findAll();
+    }
+
+    public Entreprise entreprise(long id) {
+        return entrepriseRepository.findById(id).orElse(null);
     }
 
     public void delete(long id) {

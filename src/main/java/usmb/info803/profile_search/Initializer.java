@@ -1,7 +1,9 @@
-package usmb.info803.profile_search.infrastructure.persistance;
+package usmb.info803.profile_search;
 
 import org.springframework.stereotype.Service;
 import jakarta.annotation.PostConstruct;
+import usmb.info803.profile_search.entreprise.Entreprise;
+import usmb.info803.profile_search.entreprise.EntrepriseRepository;
 
 @Service
 public class Initializer {

@@ -1,4 +1,4 @@
-package usmb.info803.profile_search.infrastructure.persistance;
+package usmb.info803.profile_search.entreprise;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
