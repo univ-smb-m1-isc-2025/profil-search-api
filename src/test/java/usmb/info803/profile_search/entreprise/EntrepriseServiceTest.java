@@ -83,4 +83,30 @@ class EntrepriseServiceTest {
         assertThat(result).isFalse();
         verify(entrepriseRepository, never()).save(any());
     }
+
+    @Test
+    void shouldDeleteEntreprise() {
+        // Given
+        when(entrepriseRepository.existsById(1L)).thenReturn(true);
+
+        // When
+        boolean result = entrepriseService.delete(1L);
+
+        // Then
+        assertThat(result).isTrue();
+        verify(entrepriseRepository).deleteById(1L);
+    }
+
+    @Test
+    void shouldNotDeleteNonExistingEntreprise() {
+        // Given
+        when(entrepriseRepository.existsById(1L)).thenReturn(false);
+
+        // When
+        boolean result = entrepriseService.delete(1L);
+
+        // Then
+        assertThat(result).isFalse();
+        verify(entrepriseRepository, never()).deleteById(1L);
+    }
 }
