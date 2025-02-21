@@ -22,9 +22,14 @@ public class EntrepriseService {
         return entrepriseRepository.findById(id).orElse(null);
     }
 
-    public void delete(long id) {
+    public boolean delete(long id) {
         Optional<Entreprise> entreprise = entrepriseRepository.findById(id);
-        entreprise.ifPresent(entrepriseRepository::delete);
+        if(entreprise.isEmpty()) {
+            return false;
+        }else{
+            entrepriseRepository.delete(entreprise.get());
+            return true;
+        }
     }
 
     public boolean create(String name) {
