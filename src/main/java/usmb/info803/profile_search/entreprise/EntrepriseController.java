@@ -52,15 +52,16 @@ public class EntrepriseController {
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> create(@RequestBody CreateEntrepriseBody req){
-        logger.info(String.format("Create entreprise with name : %s", req.getName()));
-        if(req.getName() == null || req.getName().isEmpty()) {
+        String name = req.getName().replaceAll("[\n\r]", "_");
+        logger.info(String.format("Create entreprise with name : %s", name));
+        if(req.getName() == null || name.isEmpty()) {
             logger.error("Name is empty");
             return ResponseEntity.badRequest().body("Name is empty");
         }
-        if(!entrepriseService.create(req.getName())) {
-            logger.error(String.format("Entreprise already exists : %s", req.getName()));
-            return ResponseEntity.badRequest().body(String.format("Entreprise %s already exists", req.getName()));
+        if(!entrepriseService.create(name)) {
+            logger.error(String.format("Entreprise already exists : %s", name));
+            return ResponseEntity.badRequest().body(String.format("Entreprise %s already exists", name));
         }
-        return ResponseEntity.ok(String.format("Entreprise %s created", req.getName()));
+        return ResponseEntity.ok(String.format("Entreprise %s created", name));
     }
 }
