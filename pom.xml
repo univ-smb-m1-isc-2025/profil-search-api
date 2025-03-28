@@ -8,11 +8,13 @@
 		<version>3.2.3</version>
 		<relativePath/>
 	</parent>
+
 	<groupId>usmb.info803</groupId>
 	<artifactId>profile-search</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>profile-search</name>
 	<description>Service de recherche de profils</description>
+
 	<url/>
 	<licenses>
 		<license/>
@@ -20,15 +22,18 @@
 	<developers>
 		<developer/>
 	</developers>
+
 	<scm>
 		<connection/>
 		<developerConnection/>
 		<tag/>
 		<url/>
 	</scm>
+
 	<properties>
 		<java.version>17</java.version>
 	</properties>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -39,10 +44,6 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-        <!-- <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency> -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
@@ -78,16 +79,48 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-<!--            <version>5.9.1</version>-->
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-<!--            <version>3.23.1</version>-->
             <scope>test</scope>
         </dependency>
 	</dependencies>
+
+	<profiles>
+	<profile>
+		<id>coverage</id>
+		<build>
+			<plugins>
+				<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.7</version>
+				<executions>
+					<execution>
+					<id>prepare-agent</id>
+					<goals>
+						<goal>prepare-agent</goal>
+					</goals>
+					</execution>
+					<execution>
+					<id>report</id>
+					<goals>
+						<goal>report</goal>
+					</goals>
+					<configuration>
+						<formats>
+						<format>XML</format>
+						</formats>
+					</configuration>
+					</execution>
+				</executions>
+				</plugin>
+			</plugins>
+		</build>
+	</profile>
+	</profiles>
 
 	<build>
 		<plugins>
@@ -98,6 +131,11 @@
 					<mainClass>usmb.info803.profile_search.ProfileSearchApplication</mainClass>
 				</configuration>
 			</plugin>
+			<plugin>
+            <groupId>org.sonarsource.scanner.maven</groupId>
+            <artifactId>sonar-maven-plugin</artifactId>
+            <version>3.9.1.2184</version>
+        </plugin>
 		</plugins>
 	</build>
 
