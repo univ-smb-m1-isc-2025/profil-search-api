@@ -94,6 +94,7 @@ public class MemberController {
         String email = req.getEmail().replaceAll("[\n\r]", "_");
         Long entrepriseId = req.getEntrepriseId();
         logger.info(String.format("Create member with nom : %s, prenom : %s, email : %s, entrepriseId : %d", nom, prenom, email, entrepriseId));
+        
         if(req.getNom() == null || nom.isEmpty()) {
             logger.error("Nom is empty");
             return ResponseEntity.badRequest().body("Nom is empty");
@@ -106,11 +107,13 @@ public class MemberController {
             logger.error("Email is empty");
             return ResponseEntity.badRequest().body("Email is empty");
         }
+        
         String createError = memberService.create(nom, prenom, email, entrepriseId);
-        if(createError != "") {
+        if(!createError.equals("")) {
             logger.error(String.format("User creation error : %s", createError));
             return ResponseEntity.badRequest().body(String.format("User creation error : %s", createError));
         }
+        
         return ResponseEntity.ok(String.format("User %s created", email));
     }
 }
