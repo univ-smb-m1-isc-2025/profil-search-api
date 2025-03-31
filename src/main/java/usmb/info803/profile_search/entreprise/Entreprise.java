@@ -5,9 +5,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import usmb.info803.profile_search.DbEntity;
 
 @Entity
-public class Entreprise {
+public class Entreprise implements DbEntity {
     
     @Id
     @GeneratedValue
@@ -22,6 +23,14 @@ public class Entreprise {
 
     public Entreprise(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean isValid() {
+        return name != null
+            && name.length() > 0
+            && name.length() <= 255
+            && id != null;
     }
 
     public Long getId() {
