@@ -6,8 +6,8 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=dev
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresdb:5432/profilSearch
-      - SPRING_DATASOURCE_USERNAME=profil-search
-      - SPRING_DATASOURCE_PASSWORD=profil-search
+      - SPRING_DATASOURCE_USERNAME=search_root
+      - SPRING_DATASOURCE_PASSWORD=ProfileSearch!123
     depends_on:
       - postgresdb
 
@@ -16,8 +16,8 @@ services:
     container_name: postgresdb
     restart: always
     environment:
-      POSTGRES_USER: profil-search
-      POSTGRES_PASSWORD: profil-search
+      POSTGRES_USER: search_root
+      POSTGRES_PASSWORD: ProfileSearch!123
       POSTGRES_DB: profilSearch
     ports:
       - "5432:5432"
