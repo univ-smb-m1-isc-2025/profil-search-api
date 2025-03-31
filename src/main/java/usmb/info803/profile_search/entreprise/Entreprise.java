@@ -28,7 +28,7 @@ public class Entreprise implements DbEntity {
     @Override
     public boolean isValid() {
         return name != null
-            && name.length() > 0
+            && !name.isEmpty()
             && name.length() <= 255
             && id != null;
     }
