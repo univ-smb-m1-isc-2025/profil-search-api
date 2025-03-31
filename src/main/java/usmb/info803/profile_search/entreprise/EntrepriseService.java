@@ -1,9 +1,7 @@
 package usmb.info803.profile_search.entreprise;
 
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EntrepriseService {
@@ -22,9 +20,12 @@ public class EntrepriseService {
         return entrepriseRepository.findById(id).orElse(null);
     }
 
-    public void delete(long id) {
-        Optional<Entreprise> entreprise = entrepriseRepository.findById(id);
-        entreprise.ifPresent(entrepriseRepository::delete);
+    public boolean delete(Long id) {
+        if (entrepriseRepository.existsById(id)) {
+            entrepriseRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
     public boolean create(String name) {
