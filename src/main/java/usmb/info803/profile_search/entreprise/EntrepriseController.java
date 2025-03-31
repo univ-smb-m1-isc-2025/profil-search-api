@@ -24,7 +24,6 @@ public class EntrepriseController {
     public EntrepriseController(EntrepriseService entrepriseService) {
         this.entrepriseService = entrepriseService;
     }
-    
 
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Entreprise> entreprises(){
