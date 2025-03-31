@@ -18,6 +18,24 @@ public class MemberService {
         this.entrepriseRepository = entrepriseRepository;
     }
 
+    public boolean save(Member member) {
+        if (member == null || !member.isValid()) {
+            return false;
+        }
+        Member existingMember = memberRepository.findById(member.getId()).orElse(null);
+        if (existingMember != null) {
+            existingMember.setNom(member.getNom());
+            existingMember.setPrenom(member.getPrenom());
+            existingMember.setEmail(member.getEmail());
+            existingMember.setActif(member.isActif());
+            memberRepository.save(existingMember);
+            return true;
+        }else{
+            memberRepository.save(member);
+            return true;
+        }
+    }
+
     public List<Member> members() {
         return memberRepository.findAll();
     }
@@ -50,18 +68,18 @@ public class MemberService {
         return false;
     }
 
-    public boolean create(String nom, String prenom, String email, Long entrepriseId) {
+    public String create(String nom, String prenom, String email, Long entrepriseId) {
         Member member = memberRepository.findByEmail(email);
         if (member != null) {
-            return false;
+            return String.format("Email %s alredy exists", email);
         }
         Entreprise entreprise = entrepriseRepository.findById(entrepriseId).orElse(null);
         if (entreprise == null) {
-            return false;
+            return String.format("Entreprise with id %d not found", entrepriseId);
         }
         member = new Member(nom, prenom, email, entreprise);
         memberRepository.save(member);
-        return true;
+        return "";
     }
     
 }

@@ -1,5 +1,6 @@
 package usmb.info803.profile_search.member;
 
+import usmb.info803.profile_search.DbEntity;
 import usmb.info803.profile_search.entreprise.Entreprise;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,7 +13,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.FetchType;
 
 @Entity
-public class Member {
+public class Member implements DbEntity {
 
     @Id
     @GeneratedValue
@@ -46,6 +47,18 @@ public class Member {
         this.email = email;
         this.actif = true;
         this.entreprise = entreprise;
+    }
+
+    @Override
+    public boolean isValid() {
+        return nom != null
+            && nom.length() > 0
+            && prenom != null
+            && prenom.length() > 0
+            && email != null 
+            && email.length() > 0
+            && entreprise != null
+            && entreprise.isValid();
     }
 
     // Getters and setters

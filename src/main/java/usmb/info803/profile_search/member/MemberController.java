@@ -28,42 +28,54 @@ public class MemberController {
     }
 
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Member> members() {
+    public List<MemberDTO> members() {
         logger.info("Get all members");
         return memberService.members()
                 .stream()
+                .map(MemberDTO::new)
                 .toList();
     }
     
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Member member(@PathVariable("id") long id) {
+    public MemberDTO member(@PathVariable("id") long id) {
         logger.info(String.format("Get member by id : %d", id));
-        return memberService.memberById(id);
-    }
-
-    @GetMapping(value = "/email/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Member memberByEmail(@PathVariable("email") String email) {
-        logger.info(String.format("Get member by email : %s", email));
-        return memberService.memberByEmail(email);
-    }
-
-    @GetMapping(value = "/nom/{nom}/{prenom}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Member> memberByNomAndPrenom(@PathVariable("nom") String nom, @PathVariable("prenom") String prenom) {
-        logger.info(String.format("Get member by nom : %s and prenom : %s", nom, prenom));
-        return memberService.memberByNomAndPrenom(nom, prenom);
+        return new MemberDTO(memberService.memberById(id));
     }
 
     @GetMapping(value = "/actif/{actif}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Member> membersByActif(@PathVariable("actif") boolean actif) {
+    public List<MemberDTO> membersByActif(@PathVariable("actif") boolean actif) {
         logger.info(String.format("Get members by actif : %b", actif));
-        return memberService.membersByActif(actif);
+        return memberService.membersByActif(actif)
+                .stream()
+                .map(MemberDTO::new)
+                .toList();
     }
 
     @GetMapping(value = "/entreprise/{entrepriseId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Member> membersByEntrepriseId(@PathVariable("entrepriseId") Long entrepriseId) {
+    public List<MemberDTO> membersByEntrepriseId(@PathVariable("entrepriseId") Long entrepriseId) {
         logger.info(String.format("Get members by entreprise id : %d", entrepriseId));
-        return memberService.membersByEntrepriseId(entrepriseId);
+        return memberService.membersByEntrepriseId(entrepriseId)
+                .stream()
+                .map(MemberDTO::new)
+                .toList();
     }
+
+    @PostMapping(value = "/deactivate/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> deactivate(@PathVariable("id") long id) {
+        logger.info(String.format("Deactivate member by id : %d", id));
+        Member member = memberService.memberById(id);
+        if (member == null) {
+            logger.error(String.format("User not found : %d", id));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format("User %d not found", id));
+        }
+        member.setActif(false);
+        if(!memberService.save(member)){
+            logger.error("Error while saving member");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error while saving member");
+        }
+        return ResponseEntity.ok(String.format("User %d deactivated", id));
+    }
+    
 
     @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> delete(@PathVariable("id") long id) {
@@ -94,9 +106,10 @@ public class MemberController {
             logger.error("Email is empty");
             return ResponseEntity.badRequest().body("Email is empty");
         }
-        if(!memberService.create(nom, prenom, email, entrepriseId)) {
-            logger.error(String.format("User already exists : %s", email));
-            return ResponseEntity.badRequest().body(String.format("User %s already exists", email));
+        String createError = memberService.create(nom, prenom, email, entrepriseId);
+        if(createError != "") {
+            logger.error(String.format("User creation error : %s", createError));
+            return ResponseEntity.badRequest().body(String.format("User creation error : %s", createError));
         }
         return ResponseEntity.ok(String.format("User %s created", email));
     }
