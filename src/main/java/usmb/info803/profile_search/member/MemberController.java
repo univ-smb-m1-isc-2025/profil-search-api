@@ -107,7 +107,7 @@ public class MemberController {
             return ResponseEntity.badRequest().body("Email is empty");
         }
         String createError = memberService.create(nom, prenom, email, entrepriseId);
-        if(createError != "") {
+        if(!createError.equals("")) {
             logger.error(String.format("User creation error : %s", createError));
             return ResponseEntity.badRequest().body(String.format("User creation error : %s", createError));
         }
