@@ -9,6 +9,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import usmb.info803.profile_search.entreprise.Entreprise;
+import usmb.info803.profile_search.invitation.InvitationService;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,9 +26,11 @@ public class MemberController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     private final MemberService memberService;
+    private final InvitationService invitationService;
 
-    public MemberController(MemberService memberService) {
+    public MemberController(MemberService memberService, InvitationService invitationService) {
         this.memberService = memberService;
+        this.invitationService = invitationService;
     }
 
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -89,11 +95,12 @@ public class MemberController {
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> create(@RequestBody CreateMemberBody req){
-        String nom = req.getNom().replaceAll("[\n\r]", "_");
-        String prenom = req.getPrenom().replaceAll("[\n\r]", "_");
-        String email = req.getEmail().replaceAll("[\n\r]", "_");
-        Long entrepriseId = req.getEntrepriseId();
-        logger.info(String.format("Create member with nom : %s, prenom : %s, email : %s, entrepriseId : %d", nom, prenom, email, entrepriseId));
+        String regex = "[\n\r]";
+        String nom = req.getNom().replaceAll(regex, "_");
+        String prenom = req.getPrenom().replaceAll(regex, "_");
+        String email = req.getEmail().replaceAll(regex, "_");
+        String token = req.getToken();
+        logger.info(String.format("Create member with nom : %s, prenom : %s, email : %s, entrepriseId : %s", nom, prenom, email, token));
         
         if(req.getNom() == null || nom.isEmpty()) {
             logger.error("Nom is empty");
@@ -107,8 +114,18 @@ public class MemberController {
             logger.error("Email is empty");
             return ResponseEntity.badRequest().body("Email is empty");
         }
-        
-        String createError = memberService.create(nom, prenom, email, entrepriseId);
+        if(req.getToken() == null || token.isEmpty()) {
+            logger.error("Token is empty");
+            return ResponseEntity.badRequest().body("Token is empty");
+        }
+        Entreprise entreprise = invitationService.verify(token);
+        if(entreprise == null) {
+            logger.error("Token is invalid");
+            return ResponseEntity.badRequest().body("Token is invalid");
+        }
+
+        invitationService.delete(token);
+        String createError = memberService.create(nom, prenom, email, entreprise);
         if(!createError.equals("")) {
             logger.error(String.format("User creation error : %s", createError));
             return ResponseEntity.badRequest().body(String.format("User creation error : %s", createError));

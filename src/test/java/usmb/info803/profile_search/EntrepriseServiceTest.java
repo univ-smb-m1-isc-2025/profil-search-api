@@ -1,4 +1,4 @@
-package usmb.info803.profile_search.entreprise;
+package usmb.info803.profile_search;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,6 +14,10 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import usmb.info803.profile_search.entreprise.Entreprise;
+import usmb.info803.profile_search.entreprise.EntrepriseRepository;
+import usmb.info803.profile_search.entreprise.EntrepriseService;
 
 @ExtendWith(MockitoExtension.class)
 class EntrepriseServiceTest {
