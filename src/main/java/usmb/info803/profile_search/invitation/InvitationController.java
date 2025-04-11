@@ -9,6 +9,7 @@ import usmb.info803.profile_search.entreprise.EntrepriseService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.http.MediaType;
 
 
 @RestController
@@ -24,7 +25,7 @@ public class InvitationController {
         this.entrepriseService = entrepriseService;
     }
 
-    @GetMapping("/create/{entrepriseId}")
+    @GetMapping(value = "/create/{entrepriseId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createInvitation(@PathVariable("entrepriseId") Long entrepriseId) {
         logger.info(String.format("Create invitation for entreprise id : %d", entrepriseId));
         Entreprise entreprise = entrepriseService.entreprise(entrepriseId);
