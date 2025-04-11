@@ -15,7 +15,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(@NonNull CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://profil-search.oups.net", "localhost:4200")
+                        .allowedOrigins("https://profil-search.oups.net", "http://localhost:4200")
                         .allowedMethods("GET", "POST", "DELETE")
                         .allowedHeaders("*")
                         .allowCredentials(false);
