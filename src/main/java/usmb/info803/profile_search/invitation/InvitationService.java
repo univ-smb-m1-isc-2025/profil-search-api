@@ -44,8 +44,13 @@ public class InvitationService {
 
     public Invitation add(Entreprise entreprise){
         clean();
-        Invitation invitation = new Invitation(randomString(255), entreprise);
+        Invitation invitation = new Invitation(randomString(100), entreprise);
         invitationRepository.save(invitation);
         return invitation;
+    }
+
+    public void delete(String token){
+        clean();
+        invitationRepository.deleteByToken(token);
     }
 }

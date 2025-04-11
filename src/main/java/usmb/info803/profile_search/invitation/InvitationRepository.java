@@ -11,4 +11,5 @@ public interface InvitationRepository extends JpaRepository<Invitation, Long> {
 
     Optional<Invitation> findByToken(String token);
     void deleteBytimeoutDateLessThan(Date date);
+    void deleteByToken(String token);
 }

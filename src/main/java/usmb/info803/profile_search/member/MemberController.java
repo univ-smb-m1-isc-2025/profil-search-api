@@ -124,6 +124,7 @@ public class MemberController {
             return ResponseEntity.badRequest().body("Token is invalid");
         }
 
+        invitationService.delete(token);
         String createError = memberService.create(nom, prenom, email, entreprise);
         if(!createError.equals("")) {
             logger.error(String.format("User creation error : %s", createError));
