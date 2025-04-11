@@ -9,4 +9,4 @@ public class ProfileSearchApplication {
     public static void main(String[] args) {
         SpringApplication.run(ProfileSearchApplication.class, args);
     }
-} 
+}
