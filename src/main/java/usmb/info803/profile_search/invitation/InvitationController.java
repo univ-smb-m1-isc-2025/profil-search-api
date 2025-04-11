@@ -25,6 +25,16 @@ public class InvitationController {
         this.entrepriseService = entrepriseService;
     }
 
+    @GetMapping(value = "/verify/{token}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> verifyInvitation(@PathVariable("token") String token) {
+        logger.info(String.format("Verify invitation with token : %s", token));
+        Entreprise entreprise = invitationService.verify(token);
+        if (entreprise == null) {
+            return ResponseEntity.badRequest().body(false);
+        }
+        return ResponseEntity.ok(true);
+    }
+
     @GetMapping(value = "/create/{entrepriseId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createInvitation(@PathVariable("entrepriseId") Long entrepriseId) {
         logger.info(String.format("Create invitation for entreprise id : %d", entrepriseId));
