@@ -42,9 +42,10 @@ public class InvitationService {
         return sb.toString();
     }
 
-    public void add(Entreprise entreprise){
+    public Invitation add(Entreprise entreprise){
         clean();
         Invitation invitation = new Invitation(randomString(255), entreprise);
         invitationRepository.save(invitation);
+        return invitation;
     }
 }
