@@ -89,9 +89,10 @@ public class MemberController {
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> create(@RequestBody CreateMemberBody req){
-        String nom = req.getNom().replaceAll("[\n\r]", "_");
-        String prenom = req.getPrenom().replaceAll("[\n\r]", "_");
-        String email = req.getEmail().replaceAll("[\n\r]", "_");
+        String regex = "[\n\r]";
+        String nom = req.getNom().replaceAll(regex, "_");
+        String prenom = req.getPrenom().replaceAll(regex, "_");
+        String email = req.getEmail().replaceAll(regex, "_");
         Long entrepriseId = req.getEntrepriseId();
         logger.info(String.format("Create member with nom : %s, prenom : %s, email : %s, entrepriseId : %d", nom, prenom, email, entrepriseId));
         
