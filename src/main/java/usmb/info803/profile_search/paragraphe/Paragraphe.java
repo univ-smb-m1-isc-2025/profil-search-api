@@ -24,14 +24,14 @@ public class Paragraphe implements DbEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "offre_id", nullable = false)
-    private Offre $offre;
+    private Offre offre;
 
     public Paragraphe() {
     }
 
-    public Paragraphe(String contenu, Offre $offre) {
+    public Paragraphe(String contenu, Offre offre) {
         this.contenu = contenu;
-        this.$offre = $offre;
+        this.offre = offre;
     }
 
     public Long get_Id() {
@@ -50,18 +50,18 @@ public class Paragraphe implements DbEntity {
         this.contenu = contenu;
     }
 
-    public Offre get$offre() {
-        return $offre;
+    public Offre getoffre() {
+        return offre;
     }
 
-    public void set$offre(Offre $offre) {
-        this.$offre = $offre;
+    public void setoffre(Offre offre) {
+        this.offre = offre;
     }
 
     @Override
     public boolean isValid() {
         return contenu != null && !contenu.isEmpty()
-                && $offre != null
-                && $offre.isValid();
+                && offre != null
+                && offre.isValid();
     }
 }

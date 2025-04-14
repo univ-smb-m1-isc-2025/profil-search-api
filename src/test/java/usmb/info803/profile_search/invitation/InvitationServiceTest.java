@@ -1,4 +1,4 @@
-package usmb.info803.profile_search;
+package usmb.info803.profile_search.invitation;
 
 import static org.mockito.Mockito.*;
 import static org.assertj.core.api.Assertions.*;
@@ -13,9 +13,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import usmb.info803.profile_search.entreprise.Entreprise;
-import usmb.info803.profile_search.invitation.Invitation;
-import usmb.info803.profile_search.invitation.InvitationRepository;
-import usmb.info803.profile_search.invitation.InvitationService;
 
 @ExtendWith(MockitoExtension.class)
 class InvitationServiceTest {

@@ -1,4 +1,4 @@
-package usmb.info803.profile_search;
+package usmb.info803.profile_search.question;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -12,10 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import usmb.info803.profile_search.question.Question;
-import usmb.info803.profile_search.question.QuestionRepository;
-import usmb.info803.profile_search.question.QuestionService;
 
 public class QuestionServiceTest {
 

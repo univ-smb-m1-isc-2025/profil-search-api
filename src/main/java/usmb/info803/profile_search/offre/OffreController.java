@@ -44,14 +44,14 @@ public class OffreController {
     }
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> create(@RequestBody Offre offre) {
+    public ResponseEntity<Offre> create(@RequestBody Offre offre) {
         logger.info(String.format("Create offre with titre : %s", offre.getTitre()));
         Offre createdOffre = offreService.createOffre(offre);
         if (createdOffre == null) {
             logger.error("Error while creating offre");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error while creating offre");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-        return ResponseEntity.ok(String.format("Offre %s created", offre.getTitre()));
+        return ResponseEntity.ok(createdOffre);
     }
 
     @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

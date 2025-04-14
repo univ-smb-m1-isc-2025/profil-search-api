@@ -41,7 +41,8 @@ public class TagController {
     }
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> create(@RequestBody String tag) {
+    public ResponseEntity<String> create(@RequestBody CreateTagBody body) {
+        String tag = body.getName();
         logger.info(String.format("Create tag with name : %s", tag));
         if(tag == null || tag.isEmpty()) {
             logger.error("Tag is empty");

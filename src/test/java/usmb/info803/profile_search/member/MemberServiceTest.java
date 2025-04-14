@@ -1,4 +1,4 @@
-package usmb.info803.profile_search;
+package usmb.info803.profile_search.member;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -7,9 +7,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import usmb.info803.profile_search.entreprise.Entreprise;
-import usmb.info803.profile_search.member.Member;
-import usmb.info803.profile_search.member.MemberRepository;
-import usmb.info803.profile_search.member.MemberService;
 
 import java.util.Arrays;
 import java.util.List;

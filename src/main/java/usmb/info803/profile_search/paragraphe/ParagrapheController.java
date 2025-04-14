@@ -44,14 +44,14 @@ public class ParagrapheController {
     }
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> create(@RequestBody Paragraphe paragraphe) {
+    public ResponseEntity<Paragraphe> create(@RequestBody Paragraphe paragraphe) {
         logger.info(String.format("Create paragraphe with contenu : %s", paragraphe.getContenu()));
         Paragraphe createdParagraphe = paragrapheService.createParagraphe(paragraphe);
         if (createdParagraphe == null) {
             logger.error("Error while creating paragraphe");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error while creating paragraphe");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-        return ResponseEntity.ok(String.format("Paragraphe created with contenu: %s", paragraphe.getContenu()));
+        return ResponseEntity.ok(paragraphe);
     }
 
     @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

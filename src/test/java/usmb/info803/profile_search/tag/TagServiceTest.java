@@ -1,4 +1,4 @@
-package usmb.info803.profile_search;
+package usmb.info803.profile_search.tag;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -12,10 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import usmb.info803.profile_search.tag.Tag;
-import usmb.info803.profile_search.tag.TagRepository;
-import usmb.info803.profile_search.tag.TagService;
 
 public class TagServiceTest {
 

@@ -7,11 +7,13 @@ import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+import static org.mockito.ArgumentMatchers.any;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import usmb.info803.profile_search.member.Member;
@@ -24,7 +26,7 @@ class OffreControllerTest {
 
     @MockBean
     private OffreService offreService;
-
+    
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -43,15 +45,17 @@ class OffreControllerTest {
                 .andExpect(jsonPath("$[1].titre").value("Offre 2"));
     }
 
-    // @Test
-    // void testCreateOffre() throws Exception {
-    //     Member user = new Member();
-    //     Offre offre = new Offre("Offre 1", user, true);
-    //     when(offreService.createOffre(any(Offre.class))).thenReturn(offre);
-    //     mockMvc.perform(post("/api/offres/create")
-    //             .contentType(MediaType.APPLICATION_JSON)
-    //             .content(objectMapper.writeValueAsString(offre)))
-    //             .andExpect(status().isOk())
-    //             .andExpect(jsonPath("$.titre").value("Offre 1"));
-    // }
+    @Test
+    void testCreateOffre() throws Exception {
+        Member user = new Member();
+        Offre offre = new Offre("Offre 1", user, true);
+
+        when(offreService.createOffre(any(Offre.class))).thenReturn(offre);
+
+        mockMvc.perform(post("/api/offres/create")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(offre)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.titre").value("Offre 1"));
+    }
 }

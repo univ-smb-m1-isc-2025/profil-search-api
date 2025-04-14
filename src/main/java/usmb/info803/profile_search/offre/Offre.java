@@ -23,8 +23,8 @@ public class Offre implements DbEntity {
     @Override
     public boolean isValid() {
         return titre != null && !titre.isEmpty()
-                && $user_source != null
-                && $user_source.isValid()
+                && user_source != null
+                && user_source.isValid()
                 && paragraphes != null
                 && !paragraphes.isEmpty();
     }
@@ -39,20 +39,20 @@ public class Offre implements DbEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_source_id", nullable = false)
     @JsonProperty("user_source")
-    private Member $user_source;
+    private Member user_source;
 
     @JsonProperty("est_publiee")
     private boolean est_publiee;
 
-    @OneToMany(mappedBy = "$offre", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "offre", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Paragraphe> paragraphes = new ArrayList<>();
 
     public Offre() {
     }
 
-    public Offre(String titre, Member $user_source, boolean est_publiée) {
+    public Offre(String titre, Member user_source, boolean est_publiée) {
         this.titre = titre;
-        this.$user_source = $user_source;
+        this.user_source = user_source;
         this.est_publiee = est_publiée;
     }
 
@@ -72,12 +72,12 @@ public class Offre implements DbEntity {
         this.titre = titre;
     }
 
-    public Member get$user_source() {
-        return $user_source;
+    public Member getuser_source() {
+        return user_source;
     }
 
-    public void set$user_source(Member $user_source) {
-        this.$user_source = $user_source;
+    public void setuser_source(Member user_source) {
+        this.user_source = user_source;
     }
 
     public boolean isEst_publiée() {
