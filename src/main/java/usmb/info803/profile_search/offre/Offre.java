@@ -23,15 +23,15 @@ public class Offre implements DbEntity {
     @Override
     public boolean isValid() {
         return titre != null && !titre.isEmpty()
-                && user_source != null
-                && user_source.isValid()
+                && userSource != null
+                && userSource.isValid()
                 && paragraphes != null
                 && !paragraphes.isEmpty();
     }
 
     @Id
     @GeneratedValue
-    private Long _Id;
+    private Long Id;
 
     @JsonProperty("titre")
     private String titre;
@@ -39,10 +39,10 @@ public class Offre implements DbEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_source_id", nullable = false)
     @JsonProperty("user_source")
-    private Member user_source;
+    private Member userSource;
 
     @JsonProperty("est_publiee")
-    private boolean est_publiee;
+    private boolean estPubliee;
 
     @OneToMany(mappedBy = "offre", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Paragraphe> paragraphes = new ArrayList<>();
@@ -56,12 +56,12 @@ public class Offre implements DbEntity {
         this.est_publiee = est_publiee;
     }
 
-    public Long get_Id() {
-        return _Id;
+    public Long getId() {
+        return Id;
     }
 
-    public void set_Id(Long _Id) {
-        this._Id = _Id;
+    public void setId(Long _Id) {
+        this.Id = _Id;
     }
 
     public String getTitre() {
@@ -73,11 +73,11 @@ public class Offre implements DbEntity {
     }
 
     public Member getuser_source() {
-        return user_source;
+        return userSource;
     }
 
     public void setuser_source(Member user_source) {
-        this.user_source = user_source;
+        this.userSource = user_source;
     }
 
     public boolean isEst_publiee() {
