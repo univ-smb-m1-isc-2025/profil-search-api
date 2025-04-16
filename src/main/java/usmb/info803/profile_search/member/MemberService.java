@@ -3,7 +3,6 @@ package usmb.info803.profile_search.member;
 import org.springframework.stereotype.Service;
 
 import usmb.info803.profile_search.entreprise.Entreprise;
-import usmb.info803.profile_search.entreprise.EntrepriseRepository;
 
 import java.util.List;
 
@@ -11,11 +10,9 @@ import java.util.List;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final EntrepriseRepository entrepriseRepository;
 
-    public MemberService(MemberRepository memberRepository, EntrepriseRepository entrepriseRepository) {
+    public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
-        this.entrepriseRepository = entrepriseRepository;
     }
 
     public boolean save(Member member) {
@@ -68,14 +65,10 @@ public class MemberService {
         return false;
     }
 
-    public String create(String nom, String prenom, String email, Long entrepriseId) {
+    public String create(String nom, String prenom, String email, Entreprise entreprise) {
         Member member = memberRepository.findByEmail(email);
         if (member != null) {
             return String.format("Email %s alredy exists", email);
-        }
-        Entreprise entreprise = entrepriseRepository.findById(entrepriseId).orElse(null);
-        if (entreprise == null) {
-            return String.format("Entreprise with id %d not found", entrepriseId);
         }
         member = new Member(nom, prenom, email, entreprise);
         memberRepository.save(member);

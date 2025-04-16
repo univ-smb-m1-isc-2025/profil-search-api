@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.lang.NonNull;
 
 @Configuration
 public class CorsConfig {
@@ -12,9 +13,9 @@ public class CorsConfig {
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
-            public void addCorsMappings(CorsRegistry registry) {
+            public void addCorsMappings(@NonNull CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://profil-search.oups.net", "localhost:4200")
+                        .allowedOrigins("https://profil-search.oups.net", "http://localhost:4200")
                         .allowedMethods("GET", "POST", "DELETE")
                         .allowedHeaders("*")
                         .allowCredentials(false);

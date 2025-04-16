@@ -5,16 +5,16 @@ public class CreateMemberBody {
     String nom;
     String prenom;
     String email; 
-    Long entrepriseId;
+    String token;
 
     public CreateMemberBody() {
     }
 
-    public CreateMemberBody(String nom, String prenom, String email, Long entrepriseId) {
+    public CreateMemberBody(String nom, String prenom, String email, String token) {
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
-        this.entrepriseId = entrepriseId;
+        this.token = token;
     }
 
     public String getNom() {
@@ -29,7 +29,7 @@ public class CreateMemberBody {
         return email;
     }
 
-    public Long getEntrepriseId() {
-        return entrepriseId;
+    public String getToken() {
+        return token;
     }
 }
