@@ -1,5 +1,6 @@
 package usmb.info803.profile_search;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import jakarta.annotation.PostConstruct;
@@ -8,28 +9,29 @@ import usmb.info803.profile_search.entreprise.EntrepriseRepository;
 import usmb.info803.profile_search.member.Member;
 import usmb.info803.profile_search.member.MemberRepository;
 import usmb.info803.profile_search.log.LogAction;
-import usmb.info803.profile_search.log.LogActionService;
+import usmb.info803.profile_search.log.LogActionRepository;
 
 @Service
 public class Initializer {
     
     private final EntrepriseRepository entrepriseRepository;
     private final MemberRepository memberRepository;
-    private final LogActionService logActionService;
+    private final LogActionRepository logActionRepository;
 
     public Initializer(
         EntrepriseRepository entrepriseRepository, 
         MemberRepository memberRepository,
-        LogActionService logActionService
+        LogActionRepository logActionRepository
     ) {
         this.entrepriseRepository = entrepriseRepository;
         this.memberRepository = memberRepository;
-        this.logActionService = logActionService;
+        this.logActionRepository = logActionRepository;
     }
 
     @PostConstruct
     public void init() {
         // Nettoyer les données existantes
+        logActionRepository.deleteAllInBatch();
         memberRepository.deleteAllInBatch();
         entrepriseRepository.deleteAllInBatch();
 
@@ -56,29 +58,34 @@ public class Initializer {
         System.out.println("Membres créés: " + member1.getPrenom() + ", " + member2.getPrenom() + ", " + member3.getPrenom());
 
         // Créer des logs d'actions
-        LogAction log1 = logActionService.logAction(member1, "Inscription réussie");
-        LogAction log2 = logActionService.logAction(member1, "Connexion");
-        LogAction log3 = logActionService.logAction(member2, "Inscription réussie");
-        LogAction log4 = logActionService.logAction(member2, "Mise à jour du profil");
-        LogAction log5 = logActionService.logAction(member3, "Inscription réussie");
+        LogAction log1 = createLogAction(member1, "Inscription réussie");
+        LogAction log2 = createLogAction(member1, "Connexion");
+        LogAction log3 = createLogAction(member2, "Inscription réussie");
+        LogAction log4 = createLogAction(member2, "Mise à jour du profil");
+        LogAction log5 = createLogAction(member3, "Inscription réussie");
         System.out.println("Logs créés: " + log1.getId() + ", " + log2.getId() + ", " + log3.getId() + ", " + log4.getId() + ", " + log5.getId());
         
         // Validation des requêtes de recherche
-        List<LogAction> member1Logs = logActionService.getLogsByMember(member1);
+        List<LogAction> member1Logs = logActionRepository.findByMember(member1);
         System.out.println("Logs pour " + member1.getPrenom() + ": " + member1Logs.size() + " entrées");
         for (LogAction log : member1Logs) {
             System.out.println(" - " + log.getDateTime() + ": " + log.getMessage());
         }
         
-        List<LogAction> member2Logs = logActionService.getLogsByMemberId(member2.getId());
+        List<LogAction> member2Logs = logActionRepository.findByMemberId(member2.getId());
         System.out.println("Logs pour " + member2.getPrenom() + " (par ID): " + member2Logs.size() + " entrées");
         for (LogAction log : member2Logs) {
             System.out.println(" - " + log.getDateTime() + ": " + log.getMessage());
         }
         
-        List<LogAction> allLogs = logActionService.getAllLogs();
+        List<LogAction> allLogs = logActionRepository.findAll();
         System.out.println("Total des logs: " + allLogs.size() + " entrées");
         
         System.out.println("=== INITIALISATION TERMINÉE ===");
+    }
+    
+    private LogAction createLogAction(Member member, String message) {
+        LogAction logAction = new LogAction(LocalDateTime.now(), member, message);
+        return logActionRepository.save(logAction);
     }
 }
