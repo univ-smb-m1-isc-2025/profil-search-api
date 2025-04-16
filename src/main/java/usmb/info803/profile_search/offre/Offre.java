@@ -50,10 +50,10 @@ public class Offre implements DbEntity {
     public Offre() {
     }
 
-    public Offre(String titre, Member user_source, boolean est_publiée) {
+    public Offre(String titre, Member user_source, boolean est_publiee) {
         this.titre = titre;
         this.user_source = user_source;
-        this.est_publiee = est_publiée;
+        this.est_publiee = est_publiee;
     }
 
     public Long get_Id() {
@@ -80,12 +80,12 @@ public class Offre implements DbEntity {
         this.user_source = user_source;
     }
 
-    public boolean isEst_publiée() {
+    public boolean isEst_publiee() {
         return est_publiee;
     }
 
-    public void setEst_publiée(boolean est_publiée) {
-        this.est_publiee = est_publiée;
+    public void setEst_publiee(boolean est_publiee) {
+        this.est_publiee = est_publiee;
     }
 
     public List<Paragraphe> getParagraphes() {
