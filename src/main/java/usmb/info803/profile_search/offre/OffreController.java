@@ -44,7 +44,22 @@ public class OffreController {
     }
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Offre> create(@RequestBody Offre offre) {
+    public ResponseEntity<Offre> create(@RequestBody OffreCreationDTO offreDTO) {
+        logger.info(String.format("Create offre with titre : %s et membre id : %d",
+                offreDTO.getTitre(), offreDTO.getMemberId()));
+
+        Offre createdOffre = offreService.createOffreFromDTO(offreDTO);
+        if (createdOffre == null) {
+            logger.error("Error while creating offre: member not found");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        return ResponseEntity.ok(createdOffre);
+    }
+
+    // On garde la méthode originale pour compatibilité, mais on peut aussi la supprimer
+    // si elle n'est plus utilisée
+    @PostMapping(value = "/create/full", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Offre> createFull(@RequestBody Offre offre) {
         logger.info(String.format("Create offre with titre : %s", offre.getTitre()));
         Offre createdOffre = offreService.createOffre(offre);
         if (createdOffre == null) {
