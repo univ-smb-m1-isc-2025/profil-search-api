@@ -1,6 +1,7 @@
 package usmb.info803.profile_search.member;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import usmb.info803.profile_search.entreprise.Entreprise;
 
@@ -15,6 +16,7 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
+    @Transactional
     public boolean save(Member member) {
         if (member == null || !member.isValid()) {
             return false;
@@ -57,6 +59,7 @@ public class MemberService {
         return memberRepository.findByEntrepriseId(entrepriseId);
     }
 
+    @Transactional
     public boolean delete(Long id) {
         if (memberRepository.existsById(id)) {
             memberRepository.deleteById(id);
@@ -65,6 +68,7 @@ public class MemberService {
         return false;
     }
 
+    @Transactional
     public String create(String nom, String prenom, String email, Entreprise entreprise) {
         Member member = memberRepository.findByEmail(email);
         if (member != null) {

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.time.Instant;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import usmb.info803.profile_search.entreprise.Entreprise;
 
@@ -16,6 +17,7 @@ public class InvitationService {
         this.invitationRepository = invitationRepository;
     }
 
+    @Transactional
     public void clean(){
         invitationRepository.deleteBytimeoutDateLessThan(Date.from(Instant.now()));
     }
@@ -42,6 +44,7 @@ public class InvitationService {
         return sb.toString();
     }
 
+    @Transactional
     public Invitation add(Entreprise entreprise){
         clean();
         Invitation invitation = new Invitation(randomString(100), entreprise);
@@ -49,6 +52,7 @@ public class InvitationService {
         return invitation;
     }
 
+    @Transactional
     public void delete(String token){
         clean();
         invitationRepository.deleteByToken(token);
