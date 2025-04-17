@@ -1,5 +1,6 @@
 package usmb.info803.profile_search.bullet_point;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Entity;
@@ -17,37 +18,38 @@ public class BulletPoint implements DbEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long _Id;
+    private Long id;
 
     @JsonProperty("bullet_point")
-    private String bulletPoint;
+    private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "offre_id", nullable = false)
+    @JsonBackReference
     private Offre offre;
 
     public BulletPoint() {
     }
 
-    public BulletPoint(String bulletPoint, Offre offre) {
-        this.bulletPoint = bulletPoint;
+    public BulletPoint(String content, Offre offre) {
+        this.content = content;
         this.offre = offre;
     }
 
-    public Long get_Id() {
-        return _Id;
+    public Long getId() {
+        return id;
     }
 
-    public void set_Id(Long _Id) {
-        this._Id = _Id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getBulletPoint() {
-        return bulletPoint;
+    public String getContent() {
+        return content;
     }
 
-    public void setBulletPoint(String bulletPoint) {
-        this.bulletPoint = bulletPoint;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public Offre getOffre() {
@@ -60,7 +62,7 @@ public class BulletPoint implements DbEntity {
 
     @Override
     public boolean isValid() {
-        return bulletPoint != null && !bulletPoint.isEmpty()
+        return content != null && !content.isEmpty()
                 && offre != null
                 && offre.isValid();
     }

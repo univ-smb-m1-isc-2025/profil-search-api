@@ -1,25 +1,36 @@
 package usmb.info803.profile_search;
 
 import org.springframework.stereotype.Service;
+
 import jakarta.annotation.PostConstruct;
+import usmb.info803.profile_search.bullet_point.BulletPoint;
 import usmb.info803.profile_search.entreprise.Entreprise;
 import usmb.info803.profile_search.entreprise.EntrepriseRepository;
 import usmb.info803.profile_search.member.Member;
 import usmb.info803.profile_search.member.MemberRepository;
-
+import usmb.info803.profile_search.offre.Offre;
+import usmb.info803.profile_search.offre.OffreRepository;
+import usmb.info803.profile_search.question.Question;
+import usmb.info803.profile_search.question.QuestionRepository;
 
 @Service
 public class Initializer {
-    
+
     private final EntrepriseRepository entrepriseRepository;
     private final MemberRepository memberRepository;
+    private final OffreRepository offreRepository;
+    private final QuestionRepository questionRepository;
 
     public Initializer(
-        EntrepriseRepository entrepriseRepository, 
-        MemberRepository memberRepository
+            EntrepriseRepository entrepriseRepository,
+            MemberRepository memberRepository,
+            OffreRepository offreRepository,
+            QuestionRepository questionRepository
     ) {
         this.entrepriseRepository = entrepriseRepository;
         this.memberRepository = memberRepository;
+        this.offreRepository = offreRepository;
+        this.questionRepository = questionRepository;
     }
 
     @PostConstruct
@@ -27,14 +38,15 @@ public class Initializer {
         // Nettoyer les données existantes
         memberRepository.deleteAllInBatch();
         entrepriseRepository.deleteAllInBatch();
+        questionRepository.deleteAllInBatch();
 
         System.out.println("=== INITIALISATION DES DONNÉES ===");
-        
+
         // Créer des entreprises
         Entreprise usmb = new Entreprise("USMB");
         Entreprise google = new Entreprise("Google");
         Entreprise apple = new Entreprise("Apple");
-        
+
         usmb = entrepriseRepository.save(usmb);
         google = entrepriseRepository.save(google);
         apple = entrepriseRepository.save(apple);
@@ -44,11 +56,45 @@ public class Initializer {
         Member member1 = new Member("Dupont", "Jean", "jean.dupont@usmb.fr", usmb);
         Member member2 = new Member("Martin", "Sophie", "sophie.martin@google.com", google);
         Member member3 = new Member("Dubois", "Pierre", "pierre.dubois@apple.com", apple);
-        
+
         member1 = memberRepository.save(member1);
         member2 = memberRepository.save(member2);
         member3 = memberRepository.save(member3);
         System.out.println("Membres créés: " + member1.getPrenom() + ", " + member2.getPrenom() + ", " + member3.getPrenom());
 
-}
+        // Créer des offres
+        Offre offre1 = new Offre("Développeur Java", member1, true);
+        Offre offre2 = new Offre("Ingénieur Machine Learning", member2, false);
+
+        offre1 = offreRepository.save(offre1);
+        offre2 = offreRepository.save(offre2);
+        System.out.println("Offres créées: " + offre1.getTitre() + ", " + offre2.getTitre());
+
+        // Ajouter des bullet points
+        BulletPoint bulletPoint1 = new BulletPoint("Expérience de 5 ans en Java", offre1);
+        BulletPoint bulletPoint2 = new BulletPoint("Maîtrise de Spring Boot", offre1);
+        BulletPoint bulletPoint3 = new BulletPoint("Connaissance approfondie de TensorFlow", offre2);
+
+        offre1.addBulletPoint(bulletPoint1);
+        offre1.addBulletPoint(bulletPoint2);
+        offre2.addBulletPoint(bulletPoint3);
+
+        offreRepository.save(offre1);
+        offreRepository.save(offre2);
+
+        System.out.println("Bullet points créés pour les offres");
+
+        // Créer des questions
+        Question question1 = new Question("Quelle est votre expérience en développement Java?");
+        Question question2 = new Question("Avez-vous déjà travaillé avec Spring Boot?");
+        Question question3 = new Question("Quelles sont vos compétences en intelligence artificielle?");
+        Question question4 = new Question("Préférez-vous travailler en équipe ou individuellement?");
+
+        question1 = questionRepository.save(question1);
+        question2 = questionRepository.save(question2);
+        questionRepository.save(question3);
+        questionRepository.save(question4);
+
+        System.out.println("Questions créées: " + question1.getQuestion() + ", " + question2.getQuestion() + ", etc.");
+    }
 }

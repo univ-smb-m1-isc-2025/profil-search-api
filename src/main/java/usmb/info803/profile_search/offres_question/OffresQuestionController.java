@@ -27,15 +27,15 @@ public class OffresQuestionController {
     }
 
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<OffresQuestion> getAllOffresQuestions() {
+    public List<OffresQuestionDTO> getAllOffresQuestions() {
         logger.info("Get all offres-questions");
         return offresQuestionService.getAllOffresQuestions();
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<OffresQuestion> getOffresQuestionById(@PathVariable("id") long id) {
+    public ResponseEntity<OffresQuestionDTO> getOffresQuestionById(@PathVariable("id") long id) {
         logger.info(String.format("Get offres-question by id: %d", id));
-        OffresQuestion offresQuestion = offresQuestionService.getOffresQuestionById(id);
+        OffresQuestionDTO offresQuestion = offresQuestionService.getOffresQuestionById(id);
         if (offresQuestion == null) {
             logger.error(String.format("Offres-question not found: %d", id));
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -44,9 +44,9 @@ public class OffresQuestionController {
     }
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<OffresQuestion> create(@RequestBody OffresQuestion offresQuestion) {
+    public ResponseEntity<OffresQuestionDTO> create(@RequestBody CreateOffresQuestionBody createBody) {
         logger.info("Create offres-question");
-        OffresQuestion createdOffresQuestion = offresQuestionService.createOffresQuestion(offresQuestion);
+        OffresQuestionDTO createdOffresQuestion = offresQuestionService.createOffresQuestion(createBody);
         if (createdOffresQuestion == null) {
             logger.error("Error while creating offres-question");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

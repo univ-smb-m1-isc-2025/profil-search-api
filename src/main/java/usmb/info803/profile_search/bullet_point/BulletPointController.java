@@ -27,15 +27,15 @@ public class BulletPointController {
     }
 
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<BulletPoint> getAllBulletPoints() {
+    public List<BulletPointDTO> getAllBulletPoints() {
         logger.info("Get all bullet points");
         return bulletPointService.getAllBulletPoints();
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BulletPoint> getBulletPointById(@PathVariable("id") long id) {
+    public ResponseEntity<BulletPointDTO> getBulletPointById(@PathVariable("id") long id) {
         logger.info(String.format("Get bullet point by id: %d", id));
-        BulletPoint bulletPoint = bulletPointService.getBulletPointById(id);
+        BulletPointDTO bulletPoint = bulletPointService.getBulletPointById(id);
         if (bulletPoint == null) {
             logger.error(String.format("Bullet point not found: %d", id));
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -44,9 +44,9 @@ public class BulletPointController {
     }
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BulletPoint> create(@RequestBody BulletPoint bulletPoint) {
+    public ResponseEntity<BulletPointDTO> create(@RequestBody CreateBulletPointBody createBody) {
         logger.info("Create bullet point");
-        BulletPoint createdBulletPoint = bulletPointService.createBulletPoint(bulletPoint);
+        BulletPointDTO createdBulletPoint = bulletPointService.createBulletPoint(createBody);
         if (createdBulletPoint == null) {
             logger.error("Error while creating bullet point");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -62,5 +62,16 @@ public class BulletPointController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format("Bullet point %d not found", id));
         }
         return ResponseEntity.ok(String.format("Bullet point %d deleted", id));
+    }
+
+    @GetMapping(value = "/offre/{offreId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<BulletPointDTO>> getBulletPointsByOffreId(@PathVariable("offreId") long offreId) {
+        logger.info(String.format("Get bullet points for offre id: %d", offreId));
+        List<BulletPointDTO> bulletPoints = bulletPointService.getBulletPointsByOffreId(offreId);
+        if (bulletPoints == null || bulletPoints.isEmpty()) {
+            logger.info(String.format("No bullet points found for offre: %d", offreId));
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(bulletPoints);
     }
 }

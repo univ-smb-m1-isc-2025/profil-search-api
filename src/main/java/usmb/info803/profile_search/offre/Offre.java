@@ -3,6 +3,7 @@ package usmb.info803.profile_search.offre;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.CascadeType;
@@ -14,7 +15,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import usmb.info803.profile_search.DbEntity;
+import usmb.info803.profile_search.bullet_point.BulletPoint;
 import usmb.info803.profile_search.member.Member;
+import usmb.info803.profile_search.offres_question.OffresQuestion;
 import usmb.info803.profile_search.paragraphe.Paragraphe;
 
 @Entity
@@ -45,7 +48,16 @@ public class Offre implements DbEntity {
     private boolean est_publiee;
 
     @OneToMany(mappedBy = "offre", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Paragraphe> paragraphes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "offre", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<BulletPoint> bulletPoints = new ArrayList<>();
+
+    @OneToMany(mappedBy = "offre", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<OffresQuestion> questions = new ArrayList<>();
 
     public Offre() {
     }
@@ -94,5 +106,41 @@ public class Offre implements DbEntity {
 
     public void setParagraphes(List<Paragraphe> paragraphes) {
         this.paragraphes = paragraphes;
+    }
+
+    public List<BulletPoint> getBulletPoints() {
+        return bulletPoints;
+    }
+
+    public void setBulletPoints(List<BulletPoint> bulletPoints) {
+        this.bulletPoints = bulletPoints;
+    }
+
+    public List<OffresQuestion> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<OffresQuestion> questions) {
+        this.questions = questions;
+    }
+
+    public void addQuestion(OffresQuestion offresQuestion) {
+        questions.add(offresQuestion);
+        offresQuestion.setOffre(this);
+    }
+
+    public void removeQuestion(OffresQuestion offresQuestion) {
+        questions.remove(offresQuestion);
+        offresQuestion.setOffre(null);
+    }
+
+    public void addBulletPoint(BulletPoint bulletPoint) {
+        bulletPoints.add(bulletPoint);
+        bulletPoint.setOffre(this);
+    }
+
+    public void removeBulletPoint(BulletPoint bulletPoint) {
+        bulletPoints.remove(bulletPoint);
+        bulletPoint.setOffre(null);
     }
 }
