@@ -125,7 +125,10 @@ public class CandidatureController {
             return ResponseEntity.badRequest().body(null);
         }
         Candidature candidature = candidatureService.createCandidature(candidatureDTO.getEmailCandidat(), candidatureDTO.getName(), offre);
-        return ResponseEntity.ok(new CandidatureDTO(candidature));
+        
+        CandidatureDTO resp = new CandidatureDTO(candidature);
+        resp.setDeleteToken(candidature.getDeleteToken());
+        return ResponseEntity.ok(resp);
     }
     
     @DeleteMapping("/delete/{token}")
@@ -139,7 +142,7 @@ public class CandidatureController {
         return ResponseEntity.ok("Candidature deleted successfully");
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id:[0-9]+}")
     public ResponseEntity<String> deleteCandidatureById(@PathVariable("id") Long id) {
         Candidature candidature = candidatureService.deleteById(id);
         if (candidature == null) {

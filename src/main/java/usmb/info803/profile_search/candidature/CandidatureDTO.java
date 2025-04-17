@@ -58,7 +58,7 @@ public class CandidatureDTO {
         }
         this.closed = candidature.isClosed();
         this.positif = candidature.isPositif();
-        this.deleteToken = candidature.getDeleteToken();
+        this.deleteToken = "";
         this.tagList = new ArrayList<>();
         this.questionReponses = new ArrayList<>();
     }
@@ -113,6 +113,9 @@ public class CandidatureDTO {
 
     public String getDeleteToken() {
         return deleteToken;
+    }
+    public void setDeleteToken(String deleteToken) {
+        this.deleteToken = deleteToken;
     }
 
 }
