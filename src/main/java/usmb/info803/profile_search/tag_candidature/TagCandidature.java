@@ -53,7 +53,9 @@ public class TagCandidature implements DbEntity {
     public Long getId() {
         return id;
     }
-    
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Tag getTag() {
         return tag;
