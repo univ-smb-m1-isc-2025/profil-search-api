@@ -1,6 +1,7 @@
 package usmb.info803.profile_search.offre;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,31 +28,46 @@ public class OffreController {
     }
 
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Offre> getAllOffres() {
+    public List<OffreDTO> all() {
         logger.info("Get all offres");
-        return offreService.getAllOffres();
+        return offreService.getAllOffres().stream()
+                .map(OffreDTO::fromEntity)
+                .collect(Collectors.toList());
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Offre> getOffreById(@PathVariable("id") long id) {
+    public ResponseEntity<OffreDTO> offre(@PathVariable("id") long id) {
         logger.info(String.format("Get offre by id : %d", id));
         Offre offre = offreService.getOffreById(id);
         if (offre == null) {
             logger.error(String.format("Offre not found : %d", id));
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        return ResponseEntity.ok(offre);
+        return ResponseEntity.ok(OffreDTO.fromEntity(offre));
     }
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Offre> create(@RequestBody Offre offre) {
+    public ResponseEntity<?> create(@RequestBody OffreCreationDTO offreDTO) {
+        logger.info(String.format("Create offre with titre : %s et membre id : %d",
+                offreDTO.getTitre(), offreDTO.getMemberId()));
+
+        Offre createdOffre = offreService.createOffreFromDTO(offreDTO);
+        if (createdOffre == null) {
+            logger.error("Error while creating offre: member not found");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error while creating offre: member not found");
+        }
+        return ResponseEntity.ok(OffreDTO.fromEntity(createdOffre));
+    }
+
+    @PostMapping(value = "/create/full", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<OffreDTO> createFull(@RequestBody Offre offre) {
         logger.info(String.format("Create offre with titre : %s", offre.getTitre()));
         Offre createdOffre = offreService.createOffre(offre);
         if (createdOffre == null) {
             logger.error("Error while creating offre");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-        return ResponseEntity.ok(createdOffre);
+        return ResponseEntity.ok(OffreDTO.fromEntity(createdOffre));
     }
 
     @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

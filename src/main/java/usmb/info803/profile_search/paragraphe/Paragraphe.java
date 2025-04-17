@@ -1,5 +1,6 @@
 package usmb.info803.profile_search.paragraphe;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Entity;
@@ -17,13 +18,14 @@ public class Paragraphe implements DbEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long _Id;
+    private Long id;
 
     @JsonProperty("contenu")
     private String contenu;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "offre_id", nullable = false)
+    @JsonBackReference
     private Offre offre;
 
     public Paragraphe() {
@@ -34,12 +36,12 @@ public class Paragraphe implements DbEntity {
         this.offre = offre;
     }
 
-    public Long get_Id() {
-        return _Id;
+    public Long getId() {
+        return id;
     }
 
-    public void set_Id(Long _Id) {
-        this._Id = _Id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getContenu() {
@@ -50,18 +52,19 @@ public class Paragraphe implements DbEntity {
         this.contenu = contenu;
     }
 
-    public Offre getoffre() {
+    public Offre getOffre() {
         return offre;
     }
 
-    public void setoffre(Offre offre) {
+    public void setOffre(Offre offre) {
         this.offre = offre;
     }
 
     @Override
     public boolean isValid() {
-        return contenu != null && !contenu.isEmpty()
-                && offre != null
-                && offre.isValid();
+        return contenu != null 
+            && !contenu.isEmpty()
+            && offre != null
+            && offre.isValid();
     }
 }

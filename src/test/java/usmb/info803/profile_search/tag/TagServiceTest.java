@@ -61,23 +61,27 @@ public class TagServiceTest {
 
 	@Test
 	void testCreateTagWhenNotExists() {
-		when(tagRepository.findByTag("New Tag")).thenReturn(Optional.empty());
-
-		boolean result = tagService.create("New Tag");
-
-		assertThat(result).isTrue();
-		verify(tagRepository, times(1)).findByTag("New Tag");
+		String tagName = "New Tag";
+		when(tagRepository.findByTag(tagName)).thenReturn(Optional.empty());
+		when(tagRepository.save(any(Tag.class))).thenAnswer(invocation -> invocation.getArgument(0));
+	
+		Tag result = tagService.create(tagName);
+	
+		assertThat(result).isNotNull();
+		assertThat(result.getTag()).isEqualTo(tagName);
+		verify(tagRepository, times(1)).findByTag(tagName);
 		verify(tagRepository, times(1)).save(any(Tag.class));
 	}
+	
 
 	@Test
 	void testCreateTagWhenExists() {
 		Tag existingTag = new Tag("Existing Tag");
 		when(tagRepository.findByTag("Existing Tag")).thenReturn(Optional.of(existingTag));
 
-		boolean result = tagService.create("Existing Tag");
+		Tag result = tagService.create("Existing Tag");
 
-		assertThat(result).isFalse();
+		assertThat(result).isNull();
 		verify(tagRepository, times(1)).findByTag("Existing Tag");
 		verify(tagRepository, never()).save(any(Tag.class));
 	}

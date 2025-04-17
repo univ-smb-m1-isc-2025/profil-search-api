@@ -1,9 +1,12 @@
 package usmb.info803.profile_search.member;
 
 import usmb.info803.profile_search.DbEntity;
+import usmb.info803.profile_search.Utils;
 import usmb.info803.profile_search.entreprise.Entreprise;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -13,6 +16,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.FetchType;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Member implements DbEntity {
 
     @Id
@@ -36,7 +40,12 @@ public class Member implements DbEntity {
     @JsonProperty("entreprise")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "entreprise_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Entreprise entreprise;
+
+    @JsonProperty("token")
+    @Column(unique = true, nullable = false)
+    private String token;
 
     public Member() {
     }
@@ -47,6 +56,7 @@ public class Member implements DbEntity {
         this.email = email;
         this.actif = true;
         this.entreprise = entreprise;
+        this.token = Utils.randomString(100);
     }
 
     @Override
@@ -102,5 +112,12 @@ public class Member implements DbEntity {
     }
     public void setEntreprise(Entreprise entreprise) {
         this.entreprise = entreprise;
+    }
+
+    public String getToken() {
+        return token;
+    }
+    public void setToken(String token) {
+        this.token = token;
     }
 }

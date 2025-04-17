@@ -49,8 +49,8 @@ public class TagControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(tags.size()))
-                .andExpect(jsonPath("$[0].name").value("Tag1"))
-                .andExpect(jsonPath("$[1].name").value("Tag2"));
+                .andExpect(jsonPath("$[0].tag").value("Tag1"))
+                .andExpect(jsonPath("$[1].tag").value("Tag2"));
 
         verify(tagService, times(1)).all();
     }
@@ -64,7 +64,7 @@ public class TagControllerTest {
         mockMvc.perform(get("/api/tags/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Tag1"));
+                .andExpect(jsonPath("$.tag").value("Tag1"));
 
         verify(tagService, times(1)).tag(1L);
     }
@@ -73,13 +73,15 @@ public class TagControllerTest {
     public void testCreateTag() throws Exception {
         String name = "NewTag";
         CreateTagBody tagName = new CreateTagBody(name);
-        when(tagService.create(name)).thenReturn(true);
+        Tag tag = new Tag(name);
+        tag.setId(1L);
+        when(tagService.create(name)).thenReturn(tag);
 
         mockMvc.perform(post("/api/tags/create")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(tagName)))
                 .andExpect(status().isOk())
-                .andExpect(content().string(String.format("Tag %s created", name)));
+                .andExpect(jsonPath("$.tag").value(name));
 
         verify(tagService, times(1)).create(name);
     }
@@ -88,7 +90,9 @@ public class TagControllerTest {
     public void testCreateTagAlreadyExists() throws Exception {
         String tagName = "ExistingTag";
         CreateTagBody tagNameBody = new CreateTagBody(tagName);
-        when(tagService.create(tagName)).thenReturn(false);
+        Tag tag = new Tag(tagName);
+        tag.setId(1L);
+        when(tagService.create(tagName)).thenReturn(null); // Simulate tag already exists
 
         mockMvc.perform(post("/api/tags/create")
                 .contentType(MediaType.APPLICATION_JSON)
