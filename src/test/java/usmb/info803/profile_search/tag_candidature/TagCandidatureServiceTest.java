@@ -1,4 +1,4 @@
-package usmb.info803.profile_search.tagCandidature;
+package usmb.info803.profile_search.tag_candidature;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,9 +14,6 @@ import org.mockito.MockitoAnnotations;
 
 import usmb.info803.profile_search.candidature.Candidature;
 import usmb.info803.profile_search.tag.Tag;
-import usmb.info803.profile_search.tag_candidature.TagCandidature;
-import usmb.info803.profile_search.tag_candidature.TagCandidatureRepository;
-import usmb.info803.profile_search.tag_candidature.TagCandidatureService;
 
 public class TagCandidatureServiceTest {
 

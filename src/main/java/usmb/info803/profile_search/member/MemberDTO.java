@@ -29,8 +29,20 @@ public class MemberDTO {
         }
     }
 
-    public static MemberDTO fromMember(Member member) {
-        return new MemberDTO(member);
+    public MemberDTO(Long id, String nom, String prenom, String email, boolean actif, Entreprise entreprise, String token) {
+        this.id = id;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.actif = actif;
+        if(entreprise != null) {
+            this.entrepriseName = entreprise.getName();
+            this.entrepriseId = entreprise.getId();
+        } else {
+            this.entrepriseName = null;
+            this.entrepriseId = null;
+        }
+        this.token = token;
     }
 
     public Long getId() {
