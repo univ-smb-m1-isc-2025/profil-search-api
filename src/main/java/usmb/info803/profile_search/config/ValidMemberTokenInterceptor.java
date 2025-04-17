@@ -2,7 +2,7 @@ package usmb.info803.profile_search.config;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import usmb.info803.profile_search.log.LogActionService;
+import usmb.info803.profile_search.logMemberAction.LogMemberActionService;
 import usmb.info803.profile_search.member.Member;
 import usmb.info803.profile_search.member.MemberService;
 import org.slf4j.Logger;
@@ -17,9 +17,9 @@ public class ValidMemberTokenInterceptor implements HandlerInterceptor {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final MemberService memberService;
-    private final LogActionService logActionService;
+    private final LogMemberActionService logActionService;
 
-    public ValidMemberTokenInterceptor(MemberService memberService, LogActionService logActionService) {
+    public ValidMemberTokenInterceptor(MemberService memberService, LogMemberActionService logActionService) {
         this.memberService = memberService;
         this.logActionService = logActionService;
     }

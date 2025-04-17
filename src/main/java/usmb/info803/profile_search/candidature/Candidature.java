@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.micrometer.common.lang.Nullable;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -16,6 +17,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import usmb.info803.profile_search.DbEntity;
+import usmb.info803.profile_search.Utils;
 import usmb.info803.profile_search.member.Member;
 import usmb.info803.profile_search.offre.Offre;
 import usmb.info803.profile_search.question_reponse.QuestionReponse;
@@ -49,11 +51,15 @@ public class Candidature implements DbEntity {
     private boolean closed;
 
     @JsonProperty("positif")
+    @Column(unique = true, nullable = false)
     private boolean positif;
 
     @OneToMany(mappedBy = "candidature", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<QuestionReponse> questionReponses = new ArrayList<>();
+
+    @JsonProperty("deleteToken")
+    private String deleteToken;
 
     public Candidature() {
     }
@@ -65,6 +71,7 @@ public class Candidature implements DbEntity {
         this.assignee = null;
         this.closed = false;
         this.positif = false;
+        this.deleteToken = Utils.randomString(100);
     }
 
     @Override
@@ -149,5 +156,12 @@ public class Candidature implements DbEntity {
     public void removeQuestionReponse(QuestionReponse questionReponse) {
         questionReponses.remove(questionReponse);
         questionReponse.setCandidature(null);
+    }
+
+    public String getDeleteToken() {
+        return deleteToken;
+    }
+    public void setDeleteToken(String deleteToken) {
+        this.deleteToken = deleteToken;
     }
 }

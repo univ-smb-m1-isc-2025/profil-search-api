@@ -83,4 +83,13 @@ public class CandidatureService {
         }
         return null;
     }
+
+    public Candidature deleteByDeleteToken(String deleteToken) {
+        Candidature candidature = candidatureRepository.findByDeleteToken(deleteToken);
+        if (candidature != null) {
+            candidatureRepository.deleteByDeleteToken(deleteToken);
+            return candidature;
+        }
+        return null;
+    }
 }

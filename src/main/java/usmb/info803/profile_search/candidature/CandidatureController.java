@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import usmb.info803.profile_search.logDelCandidature.LogDelCandidatureService;
 import usmb.info803.profile_search.member.Member;
 import usmb.info803.profile_search.member.MemberService;
 import usmb.info803.profile_search.offre.Offre;
@@ -27,12 +28,14 @@ public class CandidatureController {
     private final OffreService offreService;
     private final MemberService memberService;
     private final TagCandidatureService tagCandidatureService;
+    private final LogDelCandidatureService logDelCandidatureService;
 
-    public CandidatureController(CandidatureService candidatureService, OffreService offreService, MemberService memberService, TagCandidatureService tagCandidatureService) {
+    public CandidatureController(CandidatureService candidatureService, OffreService offreService, MemberService memberService, TagCandidatureService tagCandidatureService, LogDelCandidatureService logDelCandidatureService) {
         this.candidatureService = candidatureService;
         this.offreService = offreService;
         this.memberService = memberService;
         this.tagCandidatureService = tagCandidatureService;
+        this.logDelCandidatureService = logDelCandidatureService;
     }
 
     @GetMapping("/all")
@@ -125,13 +128,14 @@ public class CandidatureController {
         return ResponseEntity.ok(new CandidatureDTO(candidature));
     }
     
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteCandidature(@PathVariable("id") long id) {
-        Candidature candidature = candidatureService.getCandidatureById(id);
+    @DeleteMapping("/delete/{token}")
+    public ResponseEntity<String> deleteCandidature(@PathVariable("token") String token, @RequestBody DeleteCandidatureBody deleteCandidatureBody) {
+        Candidature candidature = candidatureService.deleteByDeleteToken(token);
         if (candidature == null) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().body("Error: Candidature with token " + token + " not found.");
         }
-        candidatureService.deleteCandidature(id);
+
+        logDelCandidatureService.LogDelCandidature(deleteCandidatureBody.getEmailCandidat(), deleteCandidatureBody.getRaison());
         return ResponseEntity.ok("Candidature deleted successfully");
     }
 

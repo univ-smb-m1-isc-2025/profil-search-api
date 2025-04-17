@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import usmb.info803.profile_search.logDelCandidature.LogDelCandidatureService;
 import usmb.info803.profile_search.member.Member;
 import usmb.info803.profile_search.member.MemberService;
 import usmb.info803.profile_search.offre.Offre;
@@ -40,6 +41,9 @@ public class CandidatureControllerTest {
     @Mock
     private TagCandidatureService tagCandidatureService;
 
+    @Mock
+    private LogDelCandidatureService logDelCandidatureService;
+
     @InjectMocks
     private CandidatureController candidatureController;
 
@@ -53,7 +57,8 @@ public class CandidatureControllerTest {
         offreService = mock(OffreService.class);
         memberService = mock(MemberService.class);
         tagCandidatureService = mock(TagCandidatureService.class);
-        candidatureController = new CandidatureController(candidatureService, offreService, memberService, tagCandidatureService);
+        logDelCandidatureService = mock(LogDelCandidatureService.class);
+        candidatureController = new CandidatureController(candidatureService, offreService, memberService, tagCandidatureService, logDelCandidatureService);
         mockMvc = MockMvcBuilders.standaloneSetup(candidatureController).build();
     }
 
@@ -105,10 +110,15 @@ public class CandidatureControllerTest {
     public void testDeleteCandidature() throws Exception {
         Candidature mockCandidature = new Candidature("test@example.com", "Test Name", new Offre());
         mockCandidature.setId(1L);
+        mockCandidature.setDeleteToken("validToken");
         
-        when(candidatureService.getCandidatureById(1L)).thenReturn(mockCandidature);
+        DeleteCandidatureBody deleteBody = new DeleteCandidatureBody("test@example.com", "oui");
 
-        mockMvc.perform(delete("/api/candidatures/delete/1"))
+        when(candidatureService.deleteByDeleteToken("validToken") ).thenReturn(mockCandidature);
+
+        mockMvc.perform(delete("/api/candidatures/delete/validToken")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(deleteBody)))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Candidature deleted successfully"));
     }

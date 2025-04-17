@@ -15,5 +15,6 @@ public interface CandidatureRepository extends JpaRepository<Candidature, Long> 
     List<Candidature> findByAssigneeId(Long assigneeId);
     List<Candidature> findByClosed(boolean closed);
     List<Candidature> findByPositif(boolean positif);
-    
+    Candidature findByDeleteToken(String deleteToken);
+    void deleteByDeleteToken(String deleteToken);
 }

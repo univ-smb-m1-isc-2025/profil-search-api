@@ -26,6 +26,7 @@ public class WebConfig implements WebMvcConfigurer {
                 "/api/candidatures/all",
                 "/api/candidatures/create",
                 "/api/candidatures/emailCandidat",
+                "/api/candidatures/delete/{token:[0-9a-zA-Z]{100}}",
                 "/api/invites/verify/{token:[0-9a-zA-Z]{100}}",
                 "/api/members/create",
                 "/api/members/email/{email:[0-9a-zA-Z@.]+}",

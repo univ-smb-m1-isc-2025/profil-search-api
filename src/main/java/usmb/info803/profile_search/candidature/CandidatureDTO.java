@@ -21,6 +21,7 @@ public class CandidatureDTO {
     private boolean positif;
     private List<TagDTO> tagList;
     private List<QuestionReponseDTO> questionReponses;
+    private String deleteToken;
 
     public CandidatureDTO() {
     }
@@ -57,6 +58,7 @@ public class CandidatureDTO {
         }
         this.closed = candidature.isClosed();
         this.positif = candidature.isPositif();
+        this.deleteToken = candidature.getDeleteToken();
         this.tagList = new ArrayList<>();
         this.questionReponses = new ArrayList<>();
     }
@@ -109,8 +111,8 @@ public class CandidatureDTO {
         return questionReponses;
     }
 
-    public void setQuestionReponses(List<QuestionReponseDTO> questionReponses) {
-        this.questionReponses = questionReponses;
+    public String getDeleteToken() {
+        return deleteToken;
     }
 
 }

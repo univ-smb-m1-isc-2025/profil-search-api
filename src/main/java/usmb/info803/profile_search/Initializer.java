@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 
 import jakarta.annotation.PostConstruct;
 import usmb.info803.profile_search.bullet_point.BulletPoint;
-import usmb.info803.profile_search.candidature.Candidature;
 import usmb.info803.profile_search.candidature.CandidatureRepository;
 import usmb.info803.profile_search.entreprise.Entreprise;
 import usmb.info803.profile_search.entreprise.EntrepriseRepository;
@@ -18,7 +17,6 @@ import usmb.info803.profile_search.paragraphe.Paragraphe;
 import usmb.info803.profile_search.paragraphe.ParagrapheRepository;
 import usmb.info803.profile_search.question.Question;
 import usmb.info803.profile_search.question.QuestionRepository;
-import usmb.info803.profile_search.question_reponse.QuestionReponse;
 import usmb.info803.profile_search.question_reponse.QuestionReponseRepository;
 
 @Service
