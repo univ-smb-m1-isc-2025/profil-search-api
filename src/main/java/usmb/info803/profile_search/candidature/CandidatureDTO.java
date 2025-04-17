@@ -2,8 +2,10 @@ package usmb.info803.profile_search.candidature;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import usmb.info803.profile_search.member.Member;
+import usmb.info803.profile_search.question_reponse.QuestionReponseDTO;
 import usmb.info803.profile_search.tag.TagDTO;
 import usmb.info803.profile_search.tag_candidature.TagCandidature;
 import usmb.info803.profile_search.tag_candidature.TagCandidatureService;
@@ -18,6 +20,7 @@ public class CandidatureDTO {
     private boolean closed;
     private boolean positif;
     private List<TagDTO> tagList;
+    private List<QuestionReponseDTO> questionReponses;
 
     public CandidatureDTO() {
     }
@@ -30,6 +33,15 @@ public class CandidatureDTO {
                 .map(TagDTO::new)
                 .toList();
         this.tagList = tagList;
+
+        // Ajouter les réponses aux questions
+        if (candidature.getQuestionReponses() != null) {
+            this.questionReponses = candidature.getQuestionReponses().stream()
+                    .map(QuestionReponseDTO::fromEntity)
+                    .collect(Collectors.toList());
+        } else {
+            this.questionReponses = new ArrayList<>();
+        }
     }
 
     public CandidatureDTO(Candidature candidature) {
@@ -38,7 +50,7 @@ public class CandidatureDTO {
         this.name = candidature.getName();
         this.offreId = candidature.getOffre().getId();
         Member assignee = candidature.getAssignee();
-        if(assignee != null) {
+        if (assignee != null) {
             this.assigneeId = assignee.getId();
         } else {
             this.assigneeId = null;
@@ -46,6 +58,7 @@ public class CandidatureDTO {
         this.closed = candidature.isClosed();
         this.positif = candidature.isPositif();
         this.tagList = new ArrayList<>();
+        this.questionReponses = new ArrayList<>();
     }
 
     public CandidatureDTO(Long id, String emailCandidat, String name, Long offreId, Long assigneeId, boolean closed, boolean positif, List<TagDTO> tagList) {
@@ -57,31 +70,47 @@ public class CandidatureDTO {
         this.closed = closed;
         this.positif = positif;
         this.tagList = tagList;
+        this.questionReponses = new ArrayList<>();
     }
 
     public Long getId() {
         return id;
     }
+
     public String getEmailCandidat() {
         return emailCandidat;
     }
+
     public String getName() {
         return name;
     }
+
     public Long getOffreId() {
         return offreId;
     }
+
     public Long getAssigneeId() {
         return assigneeId;
     }
+
     public boolean isClosed() {
         return closed;
     }
+
     public boolean isPositif() {
         return positif;
     }
+
     public List<TagDTO> getTagList() {
         return tagList;
+    }
+
+    public List<QuestionReponseDTO> getQuestionReponses() {
+        return questionReponses;
+    }
+
+    public void setQuestionReponses(List<QuestionReponseDTO> questionReponses) {
+        this.questionReponses = questionReponses;
     }
 
 }
