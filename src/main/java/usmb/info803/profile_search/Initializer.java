@@ -1,7 +1,5 @@
 package usmb.info803.profile_search;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import org.springframework.stereotype.Service;
 import jakarta.annotation.PostConstruct;
 import usmb.info803.profile_search.entreprise.Entreprise;
