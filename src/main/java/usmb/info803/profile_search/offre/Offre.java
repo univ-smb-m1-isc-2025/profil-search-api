@@ -15,6 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import usmb.info803.profile_search.DbEntity;
+import usmb.info803.profile_search.bullet_point.BulletPoint;
 import usmb.info803.profile_search.member.Member;
 import usmb.info803.profile_search.paragraphe.Paragraphe;
 
@@ -48,6 +49,10 @@ public class Offre implements DbEntity {
     @OneToMany(mappedBy = "offre", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Paragraphe> paragraphes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "offre", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<BulletPoint> bulletPoints = new ArrayList<>();
 
     public Offre() {
     }
@@ -96,5 +101,23 @@ public class Offre implements DbEntity {
 
     public void setParagraphes(List<Paragraphe> paragraphes) {
         this.paragraphes = paragraphes;
+    }
+
+    public List<BulletPoint> getBulletPoints() {
+        return bulletPoints;
+    }
+
+    public void setBulletPoints(List<BulletPoint> bulletPoints) {
+        this.bulletPoints = bulletPoints;
+    }
+
+    public void addBulletPoint(BulletPoint bulletPoint) {
+        bulletPoints.add(bulletPoint);
+        bulletPoint.setOffre(this);
+    }
+
+    public void removeBulletPoint(BulletPoint bulletPoint) {
+        bulletPoints.remove(bulletPoint);
+        bulletPoint.setOffre(null);
     }
 }
