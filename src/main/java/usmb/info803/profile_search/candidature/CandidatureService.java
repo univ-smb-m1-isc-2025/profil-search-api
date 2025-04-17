@@ -65,4 +65,22 @@ public class CandidatureService {
     public void deleteCandidature(Long id) {
         candidatureRepository.deleteById(id);
     }
+
+    public Candidature updatePositif(Long candidatureId, boolean positif) {
+        Candidature candidature = getCandidatureById(candidatureId);
+        if (candidature != null) {
+            candidature.setPositif(positif);
+            return candidatureRepository.save(candidature);
+        }
+        return null;
+    }
+
+    public Candidature updateClosed(Long candidatureId, boolean closed) {
+        Candidature candidature = getCandidatureById(candidatureId);
+        if (candidature != null) {
+            candidature.setClosed(closed);
+            return candidatureRepository.save(candidature);
+        }
+        return null;
+    }
 }
