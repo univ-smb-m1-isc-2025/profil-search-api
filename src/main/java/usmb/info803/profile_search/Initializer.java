@@ -158,29 +158,6 @@ public class Initializer {
 
         System.out.println("Questions associées aux offres");
 
-        // Créer des candidatures correctement selon le modèle Candidature.java
-        Candidature candidature1 = new Candidature("john.smith@gmail.com", "John Smith", offre1);
-        candidature1.setAssignee(member1);
-
-        Candidature candidature2 = new Candidature("emma.johnson@yahoo.com", "Emma Johnson", offre2);
-        candidature2.setAssignee(member2);
-
-        candidature1 = candidatureRepository.save(candidature1);
-        candidature2 = candidatureRepository.save(candidature2);
-
-        System.out.println("Candidatures créées pour John Smith et Emma Johnson");
-
-        // Créer des réponses aux questions
-        QuestionReponse reponse1 = new QuestionReponse(candidature1, question1, "J'ai 4 ans d'expérience en développement Java, principalement sur des applications d'entreprise.");
-        QuestionReponse reponse2 = new QuestionReponse(candidature1, question2, "Oui, j'ai travaillé avec Spring Boot pendant 2 ans sur plusieurs projets.");
-        QuestionReponse reponse3 = new QuestionReponse(candidature2, question3, "J'ai étudié le machine learning pendant mon master et j'ai travaillé sur plusieurs projets utilisant TensorFlow et PyTorch.");
-        QuestionReponse reponse4 = new QuestionReponse(candidature2, question4, "Je m'adapte aux deux environnements, mais je préfère travailler en équipe pour les projets complexes.");
-
-        questionReponseRepository.save(reponse1);
-        questionReponseRepository.save(reponse2);
-        questionReponseRepository.save(reponse3);
-        questionReponseRepository.save(reponse4);
-
-        System.out.println("Réponses aux questions créées pour les candidatures");
+        // Les candidatures et questions-réponses ont été supprimées pour permettre aux utilisateurs de les créer manuellement
     }
 }

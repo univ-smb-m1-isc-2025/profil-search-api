@@ -134,4 +134,24 @@ public class CandidatureController {
         candidatureService.deleteCandidature(id);
         return ResponseEntity.ok("Candidature deleted successfully");
     }
+
+    @PostMapping("/updatePositif/{candidatureId}/{positif}")
+    public ResponseEntity<?> updatePositif(@PathVariable("candidatureId") Long candidatureId, @PathVariable("positif") boolean positif) {
+        Candidature candidature = candidatureService.getCandidatureById(candidatureId);
+        if (candidature == null) {
+            return ResponseEntity.badRequest().body("Error: Candidature with ID " + candidatureId + " not found.");
+        }
+        Candidature updatedCandidature = candidatureService.updatePositif(candidatureId, positif);
+        return ResponseEntity.ok().body(new CandidatureDTO(updatedCandidature, tagCandidatureService));
+    }
+
+    @PostMapping("/updateClosed/{candidatureId}/{closed}")
+    public ResponseEntity<?> updateClosed(@PathVariable("candidatureId") Long candidatureId, @PathVariable("closed") boolean closed) {
+        Candidature candidature = candidatureService.getCandidatureById(candidatureId);
+        if (candidature == null) {
+            return ResponseEntity.badRequest().body("Error: Candidature with ID " + candidatureId + " not found.");
+        }
+        Candidature updatedCandidature = candidatureService.updateClosed(candidatureId, closed);
+        return ResponseEntity.ok().body(new CandidatureDTO(updatedCandidature, tagCandidatureService));
+    }
 }
