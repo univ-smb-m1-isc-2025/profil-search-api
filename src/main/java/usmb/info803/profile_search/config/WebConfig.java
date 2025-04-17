@@ -19,21 +19,23 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(requestInterceptor)
             .addPathPatterns("/**")
             .excludePathPatterns(
-                "/api/bullet-points/{id}",
+                "/api/bullet-points/{id:[0-9]+}",
                 "/api/bullet-points/all",
-                "/api/bullet-points/offre/{offreId}",
-                "/api/candidatures/{id}",
+                "/api/bullet-points/offre/{offreId:[0-9]+}",
+                "/api/candidatures/{id:[0-9]+}",
                 "/api/candidatures/all",
+                "/api/candidatures/create",
                 "/api/candidatures/emailCandidat",
-                "/api/invites/verify/{token}",
-                "/api/members/email/{email}",
-                "/api/offres-questions/{id}",
+                "/api/invites/verify/{token:[0-9a-zA-Z]{100}}",
+                "/api/members/create",
+                "/api/members/email/{email:[0-9a-zA-Z@.]+}",
+                "/api/offres-questions/{id:[0-9]+}",
                 "/api/offres-questions/all",
-                "/api/offres/{id}",
+                "/api/offres/{id:[0-9]+}",
                 "/api/offres/all",
-                "/api/paragraphes/{id}",
+                "/api/paragraphes/{id:[0-9]+}",
                 "/api/paragraphes/all",
-                "/api/questions/{id}",
+                "/api/questions/{id:[0-9]+}",
                 "/api/questions/all"
             );
     }
