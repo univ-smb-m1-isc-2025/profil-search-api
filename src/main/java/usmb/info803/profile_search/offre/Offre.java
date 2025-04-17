@@ -3,6 +3,7 @@ package usmb.info803.profile_search.offre;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.CascadeType;
@@ -45,6 +46,7 @@ public class Offre implements DbEntity {
     private boolean est_publiee;
 
     @OneToMany(mappedBy = "offre", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Paragraphe> paragraphes = new ArrayList<>();
 
     public Offre() {

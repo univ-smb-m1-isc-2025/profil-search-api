@@ -2,17 +2,21 @@ package usmb.info803.profile_search.paragraphe;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import usmb.info803.profile_search.offre.Offre;
+import usmb.info803.profile_search.offre.OffreService;
 
 @Service
 public class ParagrapheService {
 
-    @Autowired
     private final ParagrapheRepository paragrapheRepository;
+    private final OffreService offreService;
 
-    public ParagrapheService(ParagrapheRepository paragrapheRepository) {
+    public ParagrapheService(ParagrapheRepository paragrapheRepository, OffreService offreService) {
         this.paragrapheRepository = paragrapheRepository;
+        this.offreService = offreService;
     }
 
     public List<Paragraphe> getAllParagraphes() {
@@ -33,5 +37,16 @@ public class ParagrapheService {
             return true;
         }
         return false;
+    }
+
+    @Transactional
+    public Paragraphe createParagrapheFromDTO(ParagrapheCreationDTO dto) {
+        Offre offre = offreService.getOffreById(dto.getOffreId());
+        if (offre == null) {
+            return null; // Offre non trouvée
+        }
+
+        Paragraphe paragraphe = new Paragraphe(dto.getContenu(), offre);
+        return paragrapheRepository.save(paragraphe);
     }
 }
