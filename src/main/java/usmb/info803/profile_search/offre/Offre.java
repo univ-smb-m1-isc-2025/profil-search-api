@@ -17,6 +17,7 @@ import jakarta.persistence.OneToMany;
 import usmb.info803.profile_search.DbEntity;
 import usmb.info803.profile_search.bullet_point.BulletPoint;
 import usmb.info803.profile_search.member.Member;
+import usmb.info803.profile_search.offres_question.OffresQuestion;
 import usmb.info803.profile_search.paragraphe.Paragraphe;
 
 @Entity
@@ -53,6 +54,10 @@ public class Offre implements DbEntity {
     @OneToMany(mappedBy = "offre", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<BulletPoint> bulletPoints = new ArrayList<>();
+
+    @OneToMany(mappedBy = "offre", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<OffresQuestion> questions = new ArrayList<>();
 
     public Offre() {
     }
@@ -109,6 +114,24 @@ public class Offre implements DbEntity {
 
     public void setBulletPoints(List<BulletPoint> bulletPoints) {
         this.bulletPoints = bulletPoints;
+    }
+
+    public List<OffresQuestion> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<OffresQuestion> questions) {
+        this.questions = questions;
+    }
+
+    public void addQuestion(OffresQuestion offresQuestion) {
+        questions.add(offresQuestion);
+        offresQuestion.setOffre(this);
+    }
+
+    public void removeQuestion(OffresQuestion offresQuestion) {
+        questions.remove(offresQuestion);
+        offresQuestion.setOffre(null);
     }
 
     public void addBulletPoint(BulletPoint bulletPoint) {
