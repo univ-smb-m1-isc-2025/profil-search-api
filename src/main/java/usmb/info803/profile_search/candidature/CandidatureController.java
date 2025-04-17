@@ -9,6 +9,7 @@ import usmb.info803.profile_search.member.Member;
 import usmb.info803.profile_search.member.MemberService;
 import usmb.info803.profile_search.offre.Offre;
 import usmb.info803.profile_search.offre.OffreService;
+import usmb.info803.profile_search.tag_candidature.TagCandidatureService;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,18 +26,20 @@ public class CandidatureController {
     private final CandidatureService candidatureService;
     private final OffreService offreService;
     private final MemberService memberService;
+    private final TagCandidatureService tagCandidatureService;
 
-    public CandidatureController(CandidatureService candidatureService, OffreService offreService, MemberService memberService) {
+    public CandidatureController(CandidatureService candidatureService, OffreService offreService, MemberService memberService, TagCandidatureService tagCandidatureService) {
         this.candidatureService = candidatureService;
         this.offreService = offreService;
         this.memberService = memberService;
+        this.tagCandidatureService = tagCandidatureService;
     }
 
     @GetMapping("/all")
     public List<CandidatureDTO> getAllCandidatures() {
         return candidatureService.getAllCandidatures()
                 .stream()
-                .map(CandidatureDTO::new)
+                .map(candidature -> new CandidatureDTO(candidature, tagCandidatureService))
                 .toList();
     }
     
@@ -44,7 +47,7 @@ public class CandidatureController {
     public CandidatureDTO getCandidatureById(@PathVariable("id") long id) {
         Candidature candidature = candidatureService.getCandidatureById(id);
         if (candidature != null) {
-            return new CandidatureDTO(candidature);
+            return new CandidatureDTO(candidature, tagCandidatureService);
         } else {
             return null;
         }
@@ -54,7 +57,7 @@ public class CandidatureController {
     public List<CandidatureDTO> getCandidatureByEmailCandidat(@RequestParam("emailCandidat") String emailCandidat) {
         return candidatureService.getCandidatureByEmailCandidat(emailCandidat)
                 .stream()
-                .map(CandidatureDTO::new)
+                .map(candidature -> new CandidatureDTO(candidature, tagCandidatureService))
                 .toList();
     }
 
@@ -62,7 +65,7 @@ public class CandidatureController {
     public List<CandidatureDTO> getCandidatureByName(@RequestParam("name") String name) {
         return candidatureService.getCandidatureByName(name)
                 .stream()
-                .map(CandidatureDTO::new)
+                .map(candidature -> new CandidatureDTO(candidature, tagCandidatureService))
                 .toList();
     }
 
@@ -70,7 +73,7 @@ public class CandidatureController {
     public List<CandidatureDTO> getCandidatureByOffre(@RequestParam("offreID") Long offreId){
         return candidatureService.getCandidatureByOffreId(offreId)
                 .stream()
-                .map(CandidatureDTO::new)
+                .map(candidature -> new CandidatureDTO(candidature, tagCandidatureService))
                 .toList();
     }
 
@@ -78,7 +81,7 @@ public class CandidatureController {
     public List<CandidatureDTO> getCandidatureByAssignee(@RequestParam("assigneeId") Long assigneeId){
         return candidatureService.getCandidatureByAssigneeId(assigneeId)
                 .stream()
-                .map(CandidatureDTO::new)
+                .map(candidature -> new CandidatureDTO(candidature, tagCandidatureService))
                 .toList();
     }
     
@@ -86,7 +89,7 @@ public class CandidatureController {
     public List<CandidatureDTO> getCandidatureByClosed(@RequestParam("closed") boolean closed) {
         return candidatureService.getCandidatureByClosed(closed)
                 .stream()
-                .map(CandidatureDTO::new)
+                .map(candidature -> new CandidatureDTO(candidature, tagCandidatureService))
                 .toList();
     }
 
@@ -94,7 +97,7 @@ public class CandidatureController {
     public List<CandidatureDTO> getCandidatureByPositif(@RequestParam("positif") boolean positif) {
         return candidatureService.getCandidatureByPositif(positif)
                 .stream()
-                .map(CandidatureDTO::new)
+                .map(candidature -> new CandidatureDTO(candidature, tagCandidatureService))
                 .toList();
     }
 

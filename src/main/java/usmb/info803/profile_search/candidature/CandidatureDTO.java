@@ -1,6 +1,12 @@
 package usmb.info803.profile_search.candidature;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import usmb.info803.profile_search.member.Member;
+import usmb.info803.profile_search.tag.TagDTO;
+import usmb.info803.profile_search.tag_candidature.TagCandidature;
+import usmb.info803.profile_search.tag_candidature.TagCandidatureService;
 
 public class CandidatureDTO {
 
@@ -11,8 +17,19 @@ public class CandidatureDTO {
     private Long assigneeId;
     private boolean closed;
     private boolean positif;
+    private List<TagDTO> tagList;
 
     public CandidatureDTO() {
+    }
+
+    public CandidatureDTO(Candidature candidature, TagCandidatureService tagCandidatureService) {
+        this(candidature);
+        List<TagCandidature> tagcandList = tagCandidatureService.findByCandidatureId(id);
+        List<TagDTO> tagList = tagcandList.stream()
+                .map(tagCandidature -> tagCandidature.getTag())
+                .map(TagDTO::new)
+                .toList();
+        this.tagList = tagList;
     }
 
     public CandidatureDTO(Candidature candidature) {
@@ -28,9 +45,10 @@ public class CandidatureDTO {
         }
         this.closed = candidature.isClosed();
         this.positif = candidature.isPositif();
+        this.tagList = new ArrayList<>();
     }
 
-    public CandidatureDTO(Long id, String emailCandidat, String name, Long offreId, Long assigneeId, boolean closed, boolean positif) {
+    public CandidatureDTO(Long id, String emailCandidat, String name, Long offreId, Long assigneeId, boolean closed, boolean positif, List<TagDTO> tagList) {
         this.id = id;
         this.emailCandidat = emailCandidat;
         this.name = name;
@@ -38,6 +56,7 @@ public class CandidatureDTO {
         this.assigneeId = assigneeId;
         this.closed = closed;
         this.positif = positif;
+        this.tagList = tagList;
     }
 
     public Long getId() {
@@ -61,5 +80,8 @@ public class CandidatureDTO {
     public boolean isPositif() {
         return positif;
     }
-    
+    public List<TagDTO> getTagList() {
+        return tagList;
+    }
+
 }

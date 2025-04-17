@@ -60,8 +60,9 @@ public class Paragraphe implements DbEntity {
 
     @Override
     public boolean isValid() {
-        return contenu != null && !contenu.isEmpty()
-                && offre != null
-                && offre.isValid();
+        return contenu != null 
+            && !contenu.isEmpty()
+            && offre != null
+            && offre.isValid();
     }
 }

@@ -24,12 +24,11 @@ public class TagService {
         return tagRepository.findByTag(tag).orElse(null);
     }
 
-    public boolean create(String tag) {
+    public Tag create(String tag) {
         Tag q = tag(tag);
-        if (q != null) {
-            return false;
+        if (q == null) {
+            return tagRepository.save(new Tag(tag));
         }
-        tagRepository.save(new Tag(tag));
-        return true;
+        return null;
     }
 }

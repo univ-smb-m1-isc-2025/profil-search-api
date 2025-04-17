@@ -27,32 +27,34 @@ public class TagController {
     }
 
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Tag> tags() {
+    public List<TagDTO> tags() {
         logger.info("Get all tags");
         return tagService.all()
             .stream()
+            .map(TagDTO::new)
             .toList();
     }
     
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Tag tag(@PathVariable("id") long id) {
+    public TagDTO tag(@PathVariable("id") long id) {
         logger.info(String.format("Get tag by id : %d", id));
-        return tagService.tag(id);
+        return new TagDTO(tagService.tag(id));
     }
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> create(@RequestBody CreateTagBody body) {
+    public ResponseEntity<?> create(@RequestBody CreateTagBody body) {
         String tag = body.getName();
         logger.info(String.format("Create tag with name : %s", tag));
         if(tag == null || tag.isEmpty()) {
             logger.error("Tag is empty");
             return ResponseEntity.badRequest().body("Tag is empty");
         }
-        if(!tagService.create(tag)) {
+        Tag t = tagService.create(tag);
+        if(t == null) {
             logger.error(String.format("Tag already exists : %s", tag));
             return ResponseEntity.badRequest().body(String.format("Tag already exists : %s", tag));
         }
-        return ResponseEntity.ok(String.format("Tag %s created", tag));
+        return ResponseEntity.ok(new TagDTO(t));
     }
     
 }

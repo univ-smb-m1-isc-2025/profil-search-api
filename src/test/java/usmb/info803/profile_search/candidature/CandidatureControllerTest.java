@@ -22,6 +22,7 @@ import usmb.info803.profile_search.member.Member;
 import usmb.info803.profile_search.member.MemberService;
 import usmb.info803.profile_search.offre.Offre;
 import usmb.info803.profile_search.offre.OffreService;
+import usmb.info803.profile_search.tag_candidature.TagCandidatureService;
 
 public class CandidatureControllerTest {
 
@@ -36,6 +37,9 @@ public class CandidatureControllerTest {
     @Mock
     private MemberService memberService;
 
+    @Mock
+    private TagCandidatureService tagCandidatureService;
+
     @InjectMocks
     private CandidatureController candidatureController;
 
@@ -48,15 +52,16 @@ public class CandidatureControllerTest {
         candidatureService = mock(CandidatureService.class);
         offreService = mock(OffreService.class);
         memberService = mock(MemberService.class);
-        candidatureController = new CandidatureController(candidatureService, offreService, memberService);
+        tagCandidatureService = mock(TagCandidatureService.class);
+        candidatureController = new CandidatureController(candidatureService, offreService, memberService, tagCandidatureService);
         mockMvc = MockMvcBuilders.standaloneSetup(candidatureController).build();
     }
 
     @Test
     public void testGetAllCandidatures() throws Exception {
         List<CandidatureDTO> mockCandidatures = List.of(
-            new CandidatureDTO(1L, "test@example.com", "Test Name", 1L, null, false, false),
-            new CandidatureDTO(2L, "another@example.com", "Another Name", 2L, null, true, true)
+            new CandidatureDTO(1L, "test@example.com", "Test Name", 1L, null, false, false, null),
+            new CandidatureDTO(2L, "another@example.com", "Another Name", 2L, null, true, true, null)
         );
 
         when(candidatureService.getAllCandidatures())
@@ -83,7 +88,7 @@ public class CandidatureControllerTest {
 
     @Test
     public void testCreateCandidature() throws Exception {
-        CandidatureDTO candidatureDTO = new CandidatureDTO(1L, "test@example.com", "Test Name", 1L, null, false, false);
+        CandidatureDTO candidatureDTO = new CandidatureDTO(1L, "test@example.com", "Test Name", 1L, null, false, false, null);
         Offre mockOffre = new Offre();
         when(offreService.getOffreById(1L)).thenReturn(mockOffre);
         when(candidatureService.createCandidature("test@example.com", "Test Name", mockOffre))
