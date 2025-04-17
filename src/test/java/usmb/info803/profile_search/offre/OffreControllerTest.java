@@ -53,6 +53,7 @@ class OffreControllerTest {
     void testGetAllOffres() throws Exception {
         Offre offre1 = new Offre("Offre 1", new Member(), false);
         Offre offre2 = new Offre("Offre 2", new Member(), false);
+        
 
         when(offreService.getAllOffres()).thenReturn(Arrays.asList(offre1, offre2));
 
@@ -68,6 +69,7 @@ class OffreControllerTest {
     @Test
     void testGetOffreById() throws Exception {
         Offre offre = new Offre("Offre 1", new Member(), false);
+       
 
         when(offreService.getOffreById(1L)).thenReturn(offre);
 
