@@ -139,6 +139,15 @@ public class CandidatureController {
         return ResponseEntity.ok("Candidature deleted successfully");
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteCandidatureById(@PathVariable("id") Long id) {
+        Candidature candidature = candidatureService.deleteById(id);
+        if (candidature == null) {
+            return ResponseEntity.badRequest().body("Error: Candidature with ID " + id + " not found.");
+        }
+        return ResponseEntity.ok("Candidature deleted successfully");
+    }
+
     @PostMapping("/updatePositif/{candidatureId}/{positif}")
     public ResponseEntity<?> updatePositif(@PathVariable("candidatureId") Long candidatureId, @PathVariable("positif") boolean positif) {
         Candidature candidature = candidatureService.getCandidatureById(candidatureId);

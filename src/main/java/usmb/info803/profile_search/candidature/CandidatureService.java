@@ -92,4 +92,13 @@ public class CandidatureService {
         }
         return null;
     }
+
+    public Candidature deleteById(Long id) {
+        Candidature candidature = getCandidatureById(id);
+        if (candidature != null) {
+            candidatureRepository.deleteById(id);
+            return candidature;
+        }
+        return null;
+    }
 }
