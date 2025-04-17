@@ -6,6 +6,7 @@ import java.time.Instant;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import usmb.info803.profile_search.Utils;
 import usmb.info803.profile_search.entreprise.Entreprise;
 
 @Service
@@ -34,20 +35,10 @@ public class InvitationService {
         return null;
     }
 
-    private String randomString(int length) {
-        StringBuilder sb = new StringBuilder(length);
-        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        for (int i = 0; i < length; i++) {
-            int index = (int) (Math.random() * characters.length());
-            sb.append(characters.charAt(index));
-        }
-        return sb.toString();
-    }
-
     @Transactional
     public Invitation add(Entreprise entreprise){
         clean();
-        Invitation invitation = new Invitation(randomString(100), entreprise);
+        Invitation invitation = new Invitation(Utils.randomString(100), entreprise);
         invitationRepository.save(invitation);
         return invitation;
     }

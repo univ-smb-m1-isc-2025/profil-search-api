@@ -47,6 +47,10 @@ public class MemberService {
         return memberRepository.findByEmail(email);
     }
 
+    public Member memberByToken(String token) {
+        return memberRepository.findByToken(token);
+    }
+
     public List<Member> memberByNomAndPrenom(String nom, String prenom) {
         return memberRepository.findByNomAndPrenom(nom, prenom);
     }

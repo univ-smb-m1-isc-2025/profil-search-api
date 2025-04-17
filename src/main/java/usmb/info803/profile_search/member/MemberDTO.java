@@ -10,6 +10,7 @@ public class MemberDTO {
     private boolean actif;
     private String entrepriseName;
     private Long entrepriseId;
+    private String token;
 
     public MemberDTO(Member member) {
         this.id = member.getId();
@@ -17,6 +18,7 @@ public class MemberDTO {
         this.prenom = member.getPrenom();
         this.email = member.getEmail();
         this.actif = member.isActif();
+        this.token = member.getToken();
         Entreprise entreprise = member.getEntreprise();
         if(entreprise != null) {
             this.entrepriseName = entreprise.getName();
@@ -34,28 +36,25 @@ public class MemberDTO {
     public Long getId() {
         return id;
     }
-
     public String getNom() {
         return nom;
     }
-
     public String getPrenom() {
         return prenom;
     }
-
     public String getEmail() {
         return email;
     }
-
     public boolean isActif() {
         return actif;
     }
-
     public String getEntrepriseName() {
         return entrepriseName;
     }
-
     public Long getEntrepriseId() {
         return entrepriseId;
+    }
+    public String getToken() {
+        return token;
     }
 }

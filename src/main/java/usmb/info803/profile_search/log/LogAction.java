@@ -24,7 +24,7 @@ public class LogAction implements DbEntity {
 
     @JsonProperty("member")
     @ManyToOne
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
     @JsonProperty("message")
@@ -41,14 +41,15 @@ public class LogAction implements DbEntity {
 
     @Override
     public boolean isValid() {
-        return dateTime != null && message != null && !message.isEmpty();
+        return dateTime != null 
+            && message != null 
+            && !message.isEmpty();
     }
 
     // Getters and setters
     public Long getId() {
         return id;
     }
-    
     public void setId(Long id) {
         this.id = id;
     }
@@ -56,7 +57,6 @@ public class LogAction implements DbEntity {
     public LocalDateTime getDateTime() {
         return dateTime;
     }
-    
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
@@ -64,7 +64,6 @@ public class LogAction implements DbEntity {
     public Member getMember() {
         return member;
     }
-    
     public void setMember(Member member) {
         this.member = member;
     }
@@ -72,7 +71,6 @@ public class LogAction implements DbEntity {
     public String getMessage() {
         return message;
     }
-    
     public void setMessage(String message) {
         this.message = message;
     }

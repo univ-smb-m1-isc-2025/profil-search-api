@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import usmb.info803.profile_search.entreprise.Entreprise;
 import usmb.info803.profile_search.invitation.InvitationService;
 
+
 @RestController
 @RequestMapping("/api/members")
 public class MemberController {
@@ -42,9 +43,25 @@ public class MemberController {
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public MemberDTO member(@PathVariable("id") long id) {
+    public ResponseEntity<?> member(@PathVariable("id") long id) {
         logger.info(String.format("Get member by id : %d", id));
-        return new MemberDTO(memberService.memberById(id));
+        Member member = memberService.memberById(id);
+        if (member == null) {
+            logger.error(String.format("member not found : %d", id));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format("member %d not found", id));
+        }
+        return ResponseEntity.ok(new MemberDTO(member));
+    }
+
+    @GetMapping(value = "/email/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> memberByEmail(@PathVariable("email") String email) {
+        logger.info(String.format("Get member by email : %s", email));
+        Member member = memberService.memberByEmail(email);
+        if (member == null) {
+            logger.error(String.format("member not found : %s", email));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format("member %s not found", email));
+        }
+        return ResponseEntity.ok(new MemberDTO(member));
     }
 
     @GetMapping(value = "/actif/{actif}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -68,6 +85,7 @@ public class MemberController {
     @PostMapping(value = "/deactivate/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> deactivate(@PathVariable("id") long id) {
         logger.info(String.format("Deactivate member by id : %d", id));
+
         Member member = memberService.memberById(id);
         if (member == null) {
             logger.error(String.format("User not found : %d", id));
@@ -78,6 +96,8 @@ public class MemberController {
             logger.error("Error while saving member");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error while saving member");
         }
+
+        logger.info(String.format("User %d deactivated", id));
         return ResponseEntity.ok(String.format("User %d deactivated", id));
     }
 
