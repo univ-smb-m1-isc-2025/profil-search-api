@@ -36,8 +36,8 @@ public class OffreDTO {
         OffreDTO dto = new OffreDTO();
         dto.setId(offre.getId());
         dto.setTitre(offre.getTitre());
-        dto.setUserSource(offre.getuserSource());
-        dto.setEstPubliee(offre.isEstPubliee());
+        dto.setUserSource(offre.getuser_source());
+        dto.setEstPubliee(offre.isEst_publiee());
 
         // Convertir paragraphes
         if (offre.getParagraphes() != null) {

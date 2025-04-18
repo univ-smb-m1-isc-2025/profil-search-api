@@ -47,14 +47,14 @@ public class OffreController {
     }
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> create(@RequestBody OffreCreationDTO offreDTO) {
+    public ResponseEntity<OffreDTO> create(@RequestBody OffreCreationDTO offreDTO) {
         logger.info(String.format("Create offre with titre : %s et membre id : %d",
                 offreDTO.getTitre(), offreDTO.getMemberId()));
 
         Offre createdOffre = offreService.createOffreFromDTO(offreDTO);
         if (createdOffre == null) {
             logger.error("Error while creating offre: member not found");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error while creating offre: member not found");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
         return ResponseEntity.ok(OffreDTO.fromEntity(createdOffre));
     }
