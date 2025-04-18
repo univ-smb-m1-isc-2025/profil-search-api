@@ -1,14 +1,13 @@
-# Utiliser une image JRE légère pour exécuter l'application
-FROM eclipse-temurin:17-jre-alpine
-
-# Définir le répertoire de travail dans le conteneur
+# Stage de build
+FROM maven:3.8.4-openjdk-17-slim AS build
 WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean verify
 
-# Copier le fichier .jar généré dans le conteneur
-COPY ./target/profile-search-0.0.1-SNAPSHOT.jar app.jar
-
-# Exposer le port 8080 pour l'application
+# Stage final
+FROM openjdk:17-jdk-slim
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
-
-# Commande pour exécuter l'application
-CMD ["java", "-XX:InitialRAMPercentage=50", "-XX:MaxRAMPercentage=70", "-XshowSettings", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
