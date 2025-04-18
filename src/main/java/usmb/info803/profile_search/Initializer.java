@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 
 import jakarta.annotation.PostConstruct;
 import usmb.info803.profile_search.bullet_point.BulletPoint;
-import usmb.info803.profile_search.candidature.Candidature;
 import usmb.info803.profile_search.candidature.CandidatureRepository;
 import usmb.info803.profile_search.entreprise.Entreprise;
 import usmb.info803.profile_search.entreprise.EntrepriseRepository;
@@ -18,7 +17,6 @@ import usmb.info803.profile_search.paragraphe.Paragraphe;
 import usmb.info803.profile_search.paragraphe.ParagrapheRepository;
 import usmb.info803.profile_search.question.Question;
 import usmb.info803.profile_search.question.QuestionRepository;
-import usmb.info803.profile_search.question_reponse.QuestionReponse;
 import usmb.info803.profile_search.question_reponse.QuestionReponseRepository;
 
 @Service
@@ -81,10 +79,12 @@ public class Initializer {
         Member member1 = new Member("Dupont", "Jean", "jean.dupont@usmb.fr", usmb);
         Member member2 = new Member("Martin", "Sophie", "sophie.martin@google.com", google);
         Member member3 = new Member("Dubois", "Pierre", "pierre.dubois@apple.com", apple);
+        Member member4 = new Member("Leroy", "Alice", "rousseaumaxime27@gmail.com", usmb);
 
         member1 = memberRepository.save(member1);
         member2 = memberRepository.save(member2);
         member3 = memberRepository.save(member3);
+        member4 = memberRepository.save(member4);
 
         System.out.println("Membres créés: " + member1.getPrenom() + ", " + member2.getPrenom() + ", " + member3.getPrenom());
 

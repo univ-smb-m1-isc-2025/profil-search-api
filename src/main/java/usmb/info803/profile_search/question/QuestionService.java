@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class QuestionService {
+
     private final QuestionRepository questionRepository;
 
     public QuestionService(QuestionRepository questionRepository) {
@@ -31,5 +32,10 @@ public class QuestionService {
         }
         questionRepository.save(new Question(question));
         return true;
+    }
+
+    public Question save(Question question) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'save'");
     }
 }
